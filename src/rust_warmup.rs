@@ -35,7 +35,7 @@ pub fn first_n_bytes(text: &str, n: usize) -> &str {
         return &text;
     }
 
-    &text[0..n]
+    &text[..n]
 }
 
 // ---------------------------------------------------------------------------
