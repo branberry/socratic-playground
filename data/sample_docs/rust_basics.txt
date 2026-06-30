@@ -1,0 +1,13 @@
+Rust is a systems programming language focused on safety, speed, and concurrency.
+
+Ownership is Rust's core memory model. Every value has exactly one owner. When the owner goes out of scope, the value is dropped. This eliminates entire classes of use-after-free and double-free bugs at compile time.
+
+Borrowing lets you reference a value without taking ownership. Shared references (&T) allow many readers; mutable references (&mut T) allow one writer. The borrow checker enforces these rules at compile time.
+
+Traits define shared behavior, similar to interfaces in other languages. The standard library uses traits heavily: Iterator, Display, From, and Error are common examples.
+
+Error handling in Rust uses Result<T, E> for recoverable errors and the ? operator for propagation. Libraries often define their own error enums with thiserror and convert to anyhow at application boundaries.
+
+For async Rust, tokio is the most popular runtime. Futures are lazy until polled by an executor. Channels, timers, and TCP are provided as async primitives.
+
+When building data pipelines, prefer explicit types at module boundaries and keep hot paths allocation-aware. Profile before optimizing.

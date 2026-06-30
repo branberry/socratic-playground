@@ -1,0 +1,18 @@
+A vector database stores high-dimensional vectors (embeddings) and supports similarity search.
+
+Embeddings are dense numerical representations of text, images, or other data. Similar items have vectors that are close in distance. Cosine similarity and Euclidean distance are common metrics; cosine is popular when vectors are normalized.
+
+Retrieval-Augmented Generation (RAG) combines search with language models. Instead of asking an LLM to rely only on parametric memory, RAG retrieves relevant documents at query time and injects them into the prompt as context.
+
+A typical RAG pipeline has five stages:
+1. Ingest — load raw documents from files, APIs, or databases.
+2. Chunk — split documents into passages small enough for embedding models and LLM context windows.
+3. Embed — convert each chunk into a vector using an embedding model.
+4. Index — store vectors in a vector database with metadata (source, title, timestamps).
+5. Query — embed the user question, retrieve top-k similar chunks, and pass them to the LLM.
+
+Chunking strategy matters. Fixed-size windows are simple; semantic chunking respects paragraph boundaries. Overlap between chunks reduces the risk of cutting important sentences in half.
+
+Approximate Nearest Neighbor (ANN) algorithms like HNSW trade perfect accuracy for speed at scale. In-memory linear scan is fine for thousands of vectors; production systems use Qdrant, Pinecone, Weaviate, LanceDB, or pgvector.
+
+Evaluation metrics for RAG include retrieval recall@k, answer faithfulness, and latency. Start with a small golden set of questions and expected sources before tuning embeddings or chunk size.
