@@ -31,7 +31,7 @@ pub fn byte_len(text: &str) -> usize {
 ///
 /// If `n >= text.len()`, return the full string.
 pub fn first_n_bytes(text: &str, n: usize) -> &str {
-    if n > text.len() {
+    if n >= text.len() {
         return &text;
     }
 
@@ -47,7 +47,7 @@ pub fn first_n_bytes(text: &str, n: usize) -> &str {
 
 /// Dot product of two equal-length slices.
 pub fn dot_product(a: &[f32], b: &[f32]) -> f32 {
-    todo!("Exercise 3: zip a and b, multiply pairs, sum")
+    a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
 }
 
 // ---------------------------------------------------------------------------
@@ -131,6 +131,31 @@ mod tests {
     fn exercise_2_first_n_bytes() {
         assert_eq!(first_n_bytes("abcdef", 3), "abc");
         assert_eq!(first_n_bytes("abc", 10), "abc");
+        assert_eq!(first_n_bytes("abc", 3), "abc");
+    }
+
+    #[test]
+    fn exercise_2_first_n_bytes_edge_cases() {
+        // n = 0 → empty slice, even when text is non-empty
+        assert_eq!(first_n_bytes("abcdef", 0), "");
+        assert_eq!(first_n_bytes("x", 0), "");
+
+        // empty string — always empty, regardless of n
+        assert_eq!(first_n_bytes("", 0), "");
+        assert_eq!(first_n_bytes("", 1), "");
+        assert_eq!(first_n_bytes("", 100), "");
+
+        // n exactly equals length (boundary, not past end)
+        assert_eq!(first_n_bytes("abc", 3), "abc");
+        assert_eq!(first_n_bytes("a", 1), "a");
+
+        // n = 1 on multi-byte ASCII string
+        assert_eq!(first_n_bytes("hello", 1), "h");
+
+        // single-character string
+        assert_eq!(first_n_bytes("z", 0), "");
+        assert_eq!(first_n_bytes("z", 1), "z");
+        assert_eq!(first_n_bytes("z", 99), "z");
     }
 
     #[test]

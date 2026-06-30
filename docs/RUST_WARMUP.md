@@ -49,9 +49,14 @@ Exercise 7 reuses 2 and 4 — do those first. Exercises 5–6 are general Rust y
 
 **Your task:** Return `&text[..n]`, or the full string if `n` is too large.
 
-**Verify:** `cargo test exercise_2`
+**Verify:**
+```bash
+cargo test exercise_2
+```
 
----
+**Edge cases to think about:** What if `n` is 0? What if `text` is empty? What if `n` exactly equals `text.len()` (not just greater)? Run `exercise_2_first_n_bytes_edge_cases` — your implementation should pass all of them.
+
+**Discussion:** What would happen if you sliced `"héllo"` at byte index 1? (UTF-8 — why we stick to ASCII in these exercises.)
 
 ## Exercise 3 — Iterators (`dot_product`)
 
