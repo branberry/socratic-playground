@@ -17,7 +17,7 @@
 
 /// Return the number of bytes in `text` without taking ownership.
 pub fn byte_len(text: &str) -> usize {
-    todo!("Exercise 1: use a method on &str — no clone, no to_string")
+    text.len()
 }
 
 // ---------------------------------------------------------------------------
@@ -31,7 +31,11 @@ pub fn byte_len(text: &str) -> usize {
 ///
 /// If `n >= text.len()`, return the full string.
 pub fn first_n_bytes(text: &str, n: usize) -> &str {
-    todo!("Exercise 2: slice with [..n] or return text when n is past the end")
+    if n > text.len() {
+        return &text;
+    }
+
+    &text[0..n]
 }
 
 // ---------------------------------------------------------------------------
