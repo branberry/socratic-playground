@@ -117,6 +117,50 @@ pub fn split_windows(text: &str, window: usize, step: usize) -> Vec<String> {
     todo!("Exercise 7: use window_starts + first_n_bytes/slicing, collect into Vec<String>")
 }
 
+// ---------------------------------------------------------------------------
+// Exercise 8 — Explicit lifetimes (function returning &str)
+// ---------------------------------------------------------------------------
+//
+// Concept: When a function returns a reference, Rust needs to know what memory
+// it borrows from. `'a` means "this reference must not outlive the inputs."
+//
+// You've already written `fn first_n_bytes(text: &str, ...) -> &str` — the
+// compiler *elided* the lifetime. Here you write it explicitly.
+//
+// Try uncommenting `broken_temporary()` in the tests module to see the compiler
+// reject a dangling reference.
+
+/// Return the longer of `x` or `y` (by byte length). If equal, return `x`.
+pub fn longer<'a>(x: &'a str, y: &'a str) -> &'a str {
+    todo!("Exercise 8: compare x.len() and y.len(), return the longer &str")
+}
+
+// ---------------------------------------------------------------------------
+// Exercise 9 — Lifetimes in structs
+// ---------------------------------------------------------------------------
+//
+// Concept: If a struct holds references, it needs a lifetime parameter too.
+// This is a *borrowed view* of a chunk — no allocation. Your real `Chunk`
+// uses `String` because owned data can outlive the original document buffer.
+//
+// `borrow_first_window` ties together slicing (Ex 2) and lifetimes (Ex 8).
+
+/// A borrowed passage: points into existing string data, does not own it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct BorrowedPassage<'a> {
+    pub source: &'a str,
+    pub text: &'a str,
+}
+
+/// Borrow the first `window` bytes of `text` alongside its source name.
+pub fn borrow_first_window<'a>(
+    source: &'a str,
+    text: &'a str,
+    window: usize,
+) -> BorrowedPassage<'a> {
+    todo!("Exercise 9: use first_n_bytes(text, window), return BorrowedPassage {{ source, text }}")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -195,4 +239,52 @@ mod tests {
         assert_eq!(parts[3], "yz");
         assert!(parts.iter().all(|p| p.len() <= 10));
     }
+
+    #[test]
+    fn exercise_8_longer() {
+        assert_eq!(longer("hi", "hello"), "hello");
+        assert_eq!(longer("abc", "ab"), "abc");
+        assert_eq!(longer("same", "same"), "same");
+        assert_eq!(longer("", "x"), "x");
+    }
+
+    #[test]
+    fn exercise_8_longer_lifetime_at_call_site() {
+        // Both inputs live for the whole test — returned reference is valid.
+        let owned = String::from("embedding vector search");
+        let slice: &str = "search";
+        assert_eq!(longer(&owned, slice), "embedding vector search");
+    }
+
+    #[test]
+    fn exercise_9_borrow_first_window() {
+        let doc = "abcdefghijklmnopqrstuvwxyz";
+        let passage = borrow_first_window("rust_basics.txt", doc, 5);
+        assert_eq!(
+            passage,
+            BorrowedPassage {
+                source: "rust_basics.txt",
+                text: "abcde",
+            }
+        );
+    }
+
+    #[test]
+    fn exercise_9_borrow_first_window_short_doc() {
+        let doc = "hi";
+        let passage = borrow_first_window("doc.txt", doc, 100);
+        assert_eq!(passage.text, "hi");
+    }
+
+    // -----------------------------------------------------------------------
+    // Lifetime trap — uncomment to see the compiler error (E0106 / E0515):
+    //
+    // fn broken_temporary() -> &str {
+    //     let s = String::from("temporary");
+    //     &s
+    // }
+    //
+    // `s` is dropped at the end of the function; returning &s would be a
+    // dangling pointer. Rust rejects this at compile time.
+    // -----------------------------------------------------------------------
 }

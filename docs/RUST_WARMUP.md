@@ -23,9 +23,9 @@ Same contract as RAG steps:
 4. Ask for hints only when stuck — tell me what you tried first
 5. I won't paste full solutions unless you're truly blocked
 
-**Recommended order:** 1 → 2 → 3 → 4 → 7 → 5 → 6
+**Recommended order:** 1 → 2 → **8 → 9** → 3 → 4 → 7 → 5 → 6
 
-Exercise 7 reuses 2 and 4 — do those first. Exercises 5–6 are general Rust you'll need later.
+Exercise 8–9 belong right after slicing — you already return `&str` from `first_n_bytes`; now you learn *why* that compiles. Exercise 7 reuses 2 and 4. Exercises 5–6 are general Rust you'll need later.
 
 ---
 
@@ -73,6 +73,59 @@ a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
 **Verify:** `cargo test exercise_3`
 
 **Discussion:** What happens if `a` and `b` have different lengths? Should you panic, return an error, or zip to the shorter length?
+
+---
+
+## Exercise 8 — Explicit lifetimes (`longer`)
+
+**Concept:** A reference is a borrow — it must point at memory that still exists. Lifetimes track *how long* borrows are valid.
+
+When you write:
+
+```rust
+pub fn first_n_bytes(text: &str, n: usize) -> &str
+```
+
+Rust expands that to something like:
+
+```rust
+pub fn first_n_bytes<'a>(text: &'a str, n: usize) -> &'a str
+```
+
+The `'a` on the return type promises: "this slice lives as long as `text`."
+
+**Your task:** Implement `longer<'a>(x: &'a str, y: &'a str) -> &'a str` — return whichever input is longer (by bytes). If equal, return `x`.
+
+No cloning, no `String` — return one of the existing borrows.
+
+**Verify:** `cargo test exercise_8`
+
+**Try this:** Uncomment `broken_temporary()` at the bottom of the test module. Run `cargo test`. Read the compiler error — it explains why `String` can't be returned as `&str`.
+
+**Discussion:** Why can't `longer` return a reference to a local `String` created inside the function?
+
+---
+
+## Exercise 9 — Struct lifetimes (`BorrowedPassage`)
+
+**Concept:** If a struct holds references, the struct itself gets a lifetime parameter:
+
+```rust
+pub struct BorrowedPassage<'a> {
+    pub source: &'a str,
+    pub text: &'a str,
+}
+```
+
+`BorrowedPassage<'a>` cannot outlive the string data it points into.
+
+**Why it matters for RAG:** While chunking, you might slice a document without copying. But your `Chunk` struct uses owned `String` because chunks get stored in a `Vec` and must live independently of the original file buffer. **Borrow when you can; own when you must.**
+
+**Your task:** Implement `borrow_first_window` using `first_n_bytes`.
+
+**Verify:** `cargo test exercise_9`
+
+**Discussion:** Could `Chunk` in `chunk.rs` use `&str` instead of `String`? What would break when you return `Vec<Chunk>` from `chunk_file`?
 
 ---
 
@@ -138,11 +191,12 @@ a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
 | Warm-up exercise | RAG step it unlocks |
 |------------------|---------------------|
 | 1–2 Slicing | Step 1 chunking |
+| 8–9 Lifetimes | Why `Chunk` owns `String` |
 | 3 Dot product | Step 2 cosine similarity |
 | 4–7 Window loop | Step 1 chunking |
 | 5–6 Option/Result | Steps 2–5 error handling |
 
-When all seven pass:
+When exercises 1–9 pass:
 
 ```bash
 cargo test rust_warmup   # all green
@@ -162,6 +216,9 @@ cargo test chunk         # tackle Step 1 with confidence
 | `Option<T>` | `Some(value)` or `None` |
 | `Result<T, E>` | `Ok(value)` or `Err(error)` |
 | `foo?` | Return early on `Err` / `None` (in compatible functions) |
+| `'a` | Named lifetime — borrow must stay valid this long |
+| `fn f<'a>(x: &'a str) -> &'a str` | Output borrows from same place as input |
+| `Struct<'a> { field: &'a str }` | Struct holds a borrow; can't outlive it |
 | `.iter()` | Borrow each element |
 | `.map(f)` | Transform each element |
 | `.collect()` | Build a `Vec` or other collection |

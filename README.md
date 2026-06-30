@@ -19,7 +19,7 @@ The repo ships with **chunking (stub)** and a **Rust warm-up module**:
 ## Quick start
 
 ```bash
-cargo test rust_warmup   # 7 exercises — all fail until you implement them
+cargo test rust_warmup   # 9 exercises — lifetimes are 8 & 9
 cargo test
 cargo run -- ingest
 ```
