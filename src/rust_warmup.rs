@@ -68,7 +68,14 @@ pub fn dot_product(a: &[f32], b: &[f32]) -> f32 {
 /// Stop when the next start index would be >= `len`.
 pub fn window_starts(len: usize, window: usize, step: usize) -> Vec<usize> {
     let _ = window;
-    todo!("Exercise 4: loop from 0, push start, advance by step, stop when start >= len")
+
+    let mut result: Vec<usize> = vec![];
+
+    for i in (0..len).step_by(step) {
+        result.push(i);
+    }
+
+    result
 }
 
 // ---------------------------------------------------------------------------
@@ -80,7 +87,12 @@ pub fn window_starts(len: usize, window: usize, step: usize) -> Vec<usize> {
 
 /// Return the first whitespace-delimited word, or `None` if empty/whitespace.
 pub fn first_word(text: &str) -> Option<&str> {
-    todo!("Exercise 5: trim, split_whitespace, next")
+    if text.trim().is_empty() {
+        None
+    } else {
+        let strings: Vec<&str> = text.trim().split(" ").collect();
+        Some(strings[0])
+    }
 }
 
 // ---------------------------------------------------------------------------
