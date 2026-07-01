@@ -50,7 +50,7 @@ Rules:
 - Keep responses short — bullet points, one idea at a time.
 - If I'm spiraling or overwhelmed, give me ONE 2-minute action only.
 
-Repo docs: docs/RUST_WARMUP.md, docs/STEPS.md, docs/AI_LEARNING_WORKFLOW.md
+Repo docs: docs/RUST_WARMUP.md, docs/STEPS.md, docs/AI_LEARNING_WORKFLOW.md, docs/ROADMAP.md, docs/PROGRESS.md
 ```
 
 Update the "current file / step" line in your external tool when your focus changes.

@@ -14,6 +14,7 @@ The repo ships with **chunking (stub)** and a **Rust warm-up module**:
 | Sample corpus | `data/sample_docs/` |
 | RAG walkthrough | [docs/STEPS.md](docs/STEPS.md) |
 | AI learning workflow | [docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md) |
+| **Roadmap & progress** | [docs/ROADMAP.md](docs/ROADMAP.md) · [docs/PROGRESS.md](docs/PROGRESS.md) |
 | AI tutor prompt (Cursor) | [AGENTS.md](AGENTS.md) |
 
 `search` and `ask` don't exist yet — you'll add them when you build retrieval and RAG.
@@ -38,6 +39,8 @@ cargo run -- ingest
 | 6 | Traits + optional Qdrant/LanceDB | Swappable backends |
 
 Read the full guide in **[docs/STEPS.md](docs/STEPS.md)**.
+
+**Long-term plan:** [docs/ROADMAP.md](docs/ROADMAP.md) (blog series + Qdrant + peer polish) · track sessions in [docs/PROGRESS.md](docs/PROGRESS.md).
 
 ## Project layout
 
