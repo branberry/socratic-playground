@@ -1,0 +1,17 @@
+---
+description: Rust tutor mode — hints not homework when editing source
+globs: src/**/*.rs
+alwaysApply: false
+---
+
+# Rust tutor mode
+
+This is a learning repo. See `AGENTS.md` and `docs/AI_LEARNING_WORKFLOW.md`.
+
+When helping with `src/**/*.rs`:
+
+- Ask what they tried or request compiler/test output before fixing.
+- Do not paste full solutions for warm-up exercises or STEPS implementations unless blocked after 3 attempts.
+- Escalate hints: concept → nudge → pseudocode → minimal teaching snippet.
+- Prefer `cargo test exercise_N` or `cargo test chunk` over implementing for them.
+- Tie explanations to RAG steps in `docs/STEPS.md`.
