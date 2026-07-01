@@ -90,7 +90,7 @@ pub fn first_word(text: &str) -> Option<&str> {
     if text.trim().is_empty() {
         None
     } else {
-        let strings: Vec<&str> = text.trim().split(" ").collect();
+        let strings: Vec<&str> = text.trim().split_whitespace().collect();
         Some(strings[0])
     }
 }
@@ -110,7 +110,11 @@ pub enum ParseError {
 
 /// Parse a positive embedding dimension from a string (e.g. `"128"` → `Ok(128)`).
 pub fn parse_dimension(s: &str) -> Result<usize, ParseError> {
-    todo!("Exercise 6: trim, reject empty, parse with str::parse, map errors")
+    let trimmed = s.trim();
+    if trimmed.is_empty() {
+        return Err(ParseError::Empty);
+    }
+    trimmed.parse::<usize>().map_err(|_| ParseError::NotANumber)
 }
 
 // ---------------------------------------------------------------------------
@@ -126,7 +130,18 @@ pub fn parse_dimension(s: &str) -> Result<usize, ParseError> {
 /// - Advance by `step` bytes between windows.
 /// - Last window may be shorter.
 pub fn split_windows(text: &str, window: usize, step: usize) -> Vec<String> {
-    todo!("Exercise 7: use window_starts + first_n_bytes/slicing, collect into Vec<String>")
+    let mut chunks: Vec<String> = vec![];
+
+    for i in (0..text.len()).step_by(step) {
+        if i + window > text.len() {
+            chunks.push(text[i..].to_string());
+            continue;
+        }
+        let chunk = text[i..i + window].to_string();
+        chunks.push(chunk);
+    }
+
+    chunks
 }
 
 // ---------------------------------------------------------------------------
@@ -144,7 +159,11 @@ pub fn split_windows(text: &str, window: usize, step: usize) -> Vec<String> {
 
 /// Return the longer of `x` or `y` (by byte length). If equal, return `x`.
 pub fn longer<'a>(x: &'a str, y: &'a str) -> &'a str {
-    todo!("Exercise 8: compare x.len() and y.len(), return the longer &str")
+    if x.len() >= y.len() {
+        return x;
+    } else {
+        return y;
+    }
 }
 
 // ---------------------------------------------------------------------------
