@@ -21,7 +21,7 @@ cargo test
 cargo run -- ingest
 ```
 
-You should see one chunk per file today (placeholder behavior). That's intentional.
+You should see file names and byte counts — chunking comes in Step 1.
 
 ---
 
@@ -29,17 +29,40 @@ You should see one chunk per file today (placeholder behavior). That's intention
 
 **Concept:** Embedding models and LLMs have context limits. Chunking splits large documents into searchable passages small enough to embed meaningfully and fit in a prompt.
 
-**Your task:** Implement sliding-window chunking in `TextChunker::chunk_text`.
+**Your task:** Build the entire `chunk.rs` module yourself — types first, then logic. The file has guided TODOs and commented-out tests; uncomment tests as you go.
 
-Requirements:
-- Window size = `self.chunk_size` characters
-- Step size = `chunk_size - chunk_overlap`
-- Stable ids: `{source}#0`, `{source}#1`, ...
-- Reject empty/whitespace-only input
+### Substep 1a — `Chunk` struct
 
-**Hint (only if stuck):** Think about iterating start indices with `step_by(chunk_size - chunk_overlap)`, slicing `text[start..end]`, and stopping when you've covered the full string.
+Define a struct with owned `String` fields: `id`, `source`, `text`.
 
-**Discussion:** What happens at document boundaries? Should the last chunk be shorter than `chunk_size`?
+Add derives — start with:
+```rust
+#[derive(Debug, Clone, PartialEq, Eq)]
+```
+
+**Discussion:** Why `String` not `&str`? (You answered this in warm-up Ex 9.)
+
+**Verify:** Uncomment `chunk_struct_can_be_constructed` in `chunk.rs`, run `cargo test chunk`.
+
+### Substep 1b — `ChunkError`
+
+Enum with `Io { path, source }` and `EmptyDocument { name }`. Use `thiserror` — copy the pattern from `ParseError` in `rust_warmup.rs`.
+
+**Verify:** compiles; you'll test it in 1d.
+
+### Substep 1c — `TextChunker`
+
+Fields: `chunk_size`, `chunk_overlap`. Implement `Default` (500 / 50) and `new`.
+
+**Verify:** compiles.
+
+### Substep 1d — `chunk_file` + `chunk_text`
+
+- `chunk_file`: read a path, derive source name, call `chunk_text`
+- `chunk_text`: trim, reject empty, sliding window (reuse your Ex 7 loop)
+- ids: `{source}#0`, `{source}#1`, ...
+
+Wire up `lib.rs` re-exports and `main.rs` ingest (see TODOs there).
 
 **Verify:**
 ```bash

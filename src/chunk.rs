@@ -1,106 +1,113 @@
-use std::path::Path;
+//! # Step 1 — build this module yourself
+//!
+//! Nothing here is implemented for you. Work through substeps **1a → 1d** in order.
+//! Uncomment the matching test when you're ready to verify each piece.
+//!
+//! ## `#[derive(...)]` — what and why
+//!
+//! Rust can auto-implement common traits on your types:
+//!
+//! | Trait | Enables |
+//! |-------|---------|
+//! | `Debug` | `println!("{:?}", chunk)` — essential while learning |
+//! | `Clone` | `.clone()` — duplicate a value |
+//! | `PartialEq` | `==` comparison (needed for tests) |
+//! | `Eq` | stronger equality (safe for types with no floats) |
+//!
+//! Example: `#[derive(Debug, Clone, PartialEq, Eq)]` above a struct.
+//!
+//! Errors use `thiserror`: `#[derive(Debug, Error)]` on an enum plus `#[error("...")]`
+//! on each variant — see `ParseError` in `rust_warmup.rs` for a working example.
+//!
+//! ## Substeps
+//!
+//! **1a** — `Chunk` struct (owned `String` fields: `id`, `source`, `text`)
+//! **1b** — `ChunkError` enum (`Io`, `EmptyDocument`)
+//! **1c** — `TextChunker` struct + `Default` + `new`
+//! **1d** — `chunk_file` + `chunk_text` (reuse your `split_windows` loop from warm-up Ex 7)
+//!
+//! When 1d is done: `cargo test chunk` and `cargo run -- ingest`
 
-use thiserror::Error;
-
-/// A slice of source text ready for embedding.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Chunk {
-    pub id: String,
-    pub source: String,
-    pub text: String,
+// ---------------------------------------------------------------------------
+// 1a — Chunk
+// ---------------------------------------------------------------------------
+//
+// A passage of text ready for embedding. All fields are owned `String` so chunks
+// can live in a `Vec` after the original file buffer is gone.
+//
+// TODO(step-1a): Define `Chunk` with pub fields: id, source, text
+// TODO(step-1a): Add #[derive(Debug, Clone, PartialEq, Eq)]
+struct Chunk {
+    id: String,
+    source: String,
+    text: String,
 }
 
-#[derive(Debug, Error)]
-pub enum ChunkError {
-    #[error("failed to read file `{path}`: {source}")]
-    Io { path: String, source: std::io::Error },
-    #[error("empty document: {name}")]
-    EmptyDocument { name: String },
-}
+// ---------------------------------------------------------------------------
+// 1b — ChunkError
+// ---------------------------------------------------------------------------
+//
+// TODO(step-1b): enum ChunkError with:
+//   - Io { path: String, source: std::io::Error }
+//   - EmptyDocument { name: String }
+// TODO(step-1b): #[derive(Debug, Error)] from thiserror, #[error(...)] on variants
+//
+// use thiserror::Error;
+// use std::path::Path;
 
-pub struct TextChunker {
-    pub chunk_size: usize,
-    pub chunk_overlap: usize,
-}
+// ---------------------------------------------------------------------------
+// 1c — TextChunker
+// ---------------------------------------------------------------------------
+//
+// TODO(step-1c): struct with chunk_size: usize, chunk_overlap: usize
+// TODO(step-1c): impl Default → chunk_size: 500, chunk_overlap: 50
+// TODO(step-1c): impl fn new(chunk_size, chunk_overlap) -> Self
 
-impl Default for TextChunker {
-    fn default() -> Self {
-        Self {
-            chunk_size: 500,
-            chunk_overlap: 50,
-        }
-    }
-}
-
-impl TextChunker {
-    pub fn new(chunk_size: usize, chunk_overlap: usize) -> Self {
-        Self {
-            chunk_size,
-            chunk_overlap,
-        }
-    }
-
-    pub fn chunk_file(&self, path: &Path) -> Result<Vec<Chunk>, ChunkError> {
-        let source = path
-            .file_name()
-            .and_then(|name| name.to_str())
-            .unwrap_or("unknown")
-            .to_string();
-
-        let text = std::fs::read_to_string(path).map_err(|err| ChunkError::Io {
-            path: path.display().to_string(),
-            source: err,
-        })?;
-
-        self.chunk_text(&source, &text)
-    }
-
-    pub fn chunk_text(&self, source: &str, text: &str) -> Result<Vec<Chunk>, ChunkError> {
-        // TODO(step-1): Implement sliding-window chunking.
-        //
-        // Goals:
-        // - Split `text` into windows of `self.chunk_size` characters.
-        // - Advance by `chunk_size - chunk_overlap` each step.
-        // - Assign ids like `{source}#0`, `{source}#1`, ...
-        // - Return `ChunkError::EmptyDocument` when text is empty/whitespace.
-        //
-        // Hint: iterate with `(start..end).step_by(chunk_size - overlap)`.
-        // For now, return the whole document as a single chunk so the project compiles.
-
-        let trimmed = text.trim();
-        if trimmed.is_empty() {
-            return Err(ChunkError::EmptyDocument {
-                name: source.to_string(),
-            });
-        }
-
-        Ok(vec![Chunk {
-            id: format!("{source}#0"),
-            source: source.to_string(),
-            text: trimmed.to_string(),
-        }])
-    }
-}
+// ---------------------------------------------------------------------------
+// 1d — chunking logic
+// ---------------------------------------------------------------------------
+//
+// TODO(step-1d): chunk_file(&self, path: &Path) -> Result<Vec<Chunk>, ChunkError>
+//   - read file, derive source from file_name, delegate to chunk_text
+//   - map io errors to ChunkError::Io
+//
+// TODO(step-1d): chunk_text(&self, source: &str, text: &str) -> Result<Vec<Chunk>, ChunkError>
+//   - trim, reject empty → EmptyDocument
+//   - sliding window: window = chunk_size, step = chunk_size - chunk_overlap
+//   - ids: "{source}#0", "{source}#1", ...
+//
+// Wire main.rs when done (see TODO in src/main.rs).
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // Uncomment each test as you complete the matching substep.
 
-    #[test]
-    fn chunk_text_rejects_empty_input() {
-        let chunker = TextChunker::default();
-        let err = chunker.chunk_text("doc.txt", "   ").unwrap_err();
-        assert!(matches!(err, ChunkError::EmptyDocument { .. }));
-    }
+    // use super::*;
 
-    // TODO(step-1): Uncomment and make pass after implementing sliding-window chunking.
-    
-    #[test]
-    fn chunk_text_splits_long_documents() {
-        let chunker = TextChunker::new(10, 2);
-        let text = "abcdefghijklmnopqrstuvwxyz";
-        let chunks = chunker.chunk_text("doc.txt", text).unwrap();
-        assert!(chunks.len() > 1);
-        assert!(chunks.iter().all(|c| c.text.len() <= 10));
-    }
+    // #[test]
+    // fn chunk_struct_can_be_constructed() {
+    //     let chunk = Chunk {
+    //         id: "doc.txt#0".into(),
+    //         source: "doc.txt".into(),
+    //         text: "hello".into(),
+    //     };
+    //     assert_eq!(chunk.id, "doc.txt#0");
+    //     assert!(format!("{:?}", chunk).contains("hello"));
+    // }
+
+    // #[test]
+    // fn chunk_text_rejects_empty_input() {
+    //     let chunker = TextChunker::default();
+    //     let err = chunker.chunk_text("doc.txt", "   ").unwrap_err();
+    //     assert!(matches!(err, ChunkError::EmptyDocument { .. }));
+    // }
+
+    // #[test]
+    // fn chunk_text_splits_long_documents() {
+    //     let chunker = TextChunker::new(10, 2);
+    //     let text = "abcdefghijklmnopqrstuvwxyz";
+    //     let chunks = chunker.chunk_text("doc.txt", text).unwrap();
+    //     assert!(chunks.len() > 1);
+    //     assert!(chunks.iter().all(|c| c.text.len() <= 10));
+    // }
 }

@@ -7,4 +7,5 @@
 pub mod chunk;
 pub mod rust_warmup;
 
-pub use chunk::{Chunk, ChunkError, TextChunker};
+// TODO(step-1): Uncomment when you define these in chunk.rs:
+// pub use chunk::{Chunk, ChunkError, TextChunker};
