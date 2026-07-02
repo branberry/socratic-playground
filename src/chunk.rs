@@ -28,6 +28,8 @@
 //!
 //! When 1d is done: `cargo test chunk` and `cargo run -- ingest`
 
+use std::path::Path;
+use thiserror::Error;
 // ---------------------------------------------------------------------------
 // 1a — Chunk
 // ---------------------------------------------------------------------------
@@ -37,10 +39,11 @@
 //
 // TODO(step-1a): Define `Chunk` with pub fields: id, source, text
 // TODO(step-1a): Add #[derive(Debug, Clone, PartialEq, Eq)]
-struct Chunk {
-    id: String,
-    source: String,
-    text: String,
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Chunk {
+    pub id: String,
+    pub source: String,
+    pub text: String,
 }
 
 // ---------------------------------------------------------------------------
@@ -52,8 +55,17 @@ struct Chunk {
 //   - EmptyDocument { name: String }
 // TODO(step-1b): #[derive(Debug, Error)] from thiserror, #[error(...)] on variants
 //
-// use thiserror::Error;
-// use std::path::Path;
+
+#[derive(Debug, Error)]
+pub enum ChunkError {
+    #[error("The file could not be be read")]
+    Io {
+        path: String,
+        source: std::io::Error,
+    },
+    #[error("The document is emtpy")]
+    EmptyDocument { name: String },
+}
 
 // ---------------------------------------------------------------------------
 // 1c — TextChunker
@@ -82,18 +94,18 @@ struct Chunk {
 mod tests {
     // Uncomment each test as you complete the matching substep.
 
-    // use super::*;
+    use super::*;
 
-    // #[test]
-    // fn chunk_struct_can_be_constructed() {
-    //     let chunk = Chunk {
-    //         id: "doc.txt#0".into(),
-    //         source: "doc.txt".into(),
-    //         text: "hello".into(),
-    //     };
-    //     assert_eq!(chunk.id, "doc.txt#0");
-    //     assert!(format!("{:?}", chunk).contains("hello"));
-    // }
+    #[test]
+    fn chunk_struct_can_be_constructed() {
+        let chunk = Chunk {
+            id: "doc.txt#0".into(),
+            source: "doc.txt".into(),
+            text: "hello".into(),
+        };
+        assert_eq!(chunk.id, "doc.txt#0");
+        assert!(format!("{:?}", chunk).contains("hello"));
+    }
 
     // #[test]
     // fn chunk_text_rejects_empty_input() {
