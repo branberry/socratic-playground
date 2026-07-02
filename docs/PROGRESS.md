@@ -90,7 +90,7 @@ _Newest first. One line per session is enough._
 
 | Date | Phase | Done | Next 5-min task |
 |------|-------|------|-----------------|
-| _example_ | 0 | Exercises 1–8 green | Finish ex 9: `borrow_first_window` |
+| _30/6/2026_ | 0 | Exercises 1–8 green | Finish ex 9: `borrow_first_window` |
 | | | | |
 
 ---

@@ -189,7 +189,13 @@ pub fn borrow_first_window<'a>(
     text: &'a str,
     window: usize,
 ) -> BorrowedPassage<'a> {
-    todo!("Exercise 9: use first_n_bytes(text, window), return BorrowedPassage {{ source, text }}")
+    let min_window = window.min(text.len());
+    let borrowed_passage = BorrowedPassage {
+        source: source,
+        text: &text[..min_window],
+    };
+
+    borrowed_passage
 }
 
 #[cfg(test)]
