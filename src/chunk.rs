@@ -111,6 +111,10 @@ impl Default for TextChunker {
 //   - ids: "{source}#0", "{source}#1", ...
 //
 // Wire main.rs when done (see TODO in src/main.rs).
+impl TextChunker {
+    pub fn chunk_file(&self, path: &Path) -> Result<Vec<Chunk>, ChunkError> {}
+    pub fn chunk_text(&self, source: &str, text: &str) {}
+}
 
 #[cfg(test)]
 mod tests {
