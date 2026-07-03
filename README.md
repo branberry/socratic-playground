@@ -5,7 +5,7 @@ Two independent tracks — no shared code.
 | Track | Goal | Start here |
 |-------|------|------------|
 | **Rust — RAG** | Vector DBs & RAG CLI from scratch | [docs/STEPS.md](docs/STEPS.md) · `cargo test` |
-| **C — side quest** | Systems programming in C (unrelated to RAG) | [c/README.md](c/README.md) · `make -C c test` |
+| **C — side quest** | Systems C → simple emulator (TinyVM) | [c/README.md](c/README.md) · `make -C c test EX=01` |
 
 ---
 
