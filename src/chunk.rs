@@ -89,6 +89,14 @@ impl TextChunker {
     }
 }
 
+impl Default for TextChunker {
+    fn default() -> Self {
+        Self {
+            chunk_size: 500,
+            chunk_overlap: 50,
+        }
+    }
+}
 // ---------------------------------------------------------------------------
 // 1d — chunking logic
 // ---------------------------------------------------------------------------
