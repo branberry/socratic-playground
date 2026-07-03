@@ -63,7 +63,7 @@ pub enum ChunkError {
         path: String,
         source: std::io::Error,
     },
-    #[error("The document is emtpy")]
+    #[error("The document is empty")]
     EmptyDocument { name: String },
 }
 
@@ -74,6 +74,13 @@ pub enum ChunkError {
 // TODO(step-1c): struct with chunk_size: usize, chunk_overlap: usize
 // TODO(step-1c): impl Default → chunk_size: 500, chunk_overlap: 50
 // TODO(step-1c): impl fn new(chunk_size, chunk_overlap) -> Self
+
+pub struct TextChunker {
+    pub chunk_size: usize,
+    pub chunk_overlap: usize,
+}
+
+impl TextChunker {}
 
 // ---------------------------------------------------------------------------
 // 1d — chunking logic
