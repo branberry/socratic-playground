@@ -1,14 +1,21 @@
 # C learning topics
 
-Planned arc for the side quest (not tied to RAG).
+Arc toward a **simple emulator** (TinyVM). Full spec: [EMULATOR.md](EMULATOR.md).
 
-| Phase | Topic | Stretch goal |
-|-------|--------|--------------|
-| 1 | Compile, `printf`, basic types | Done — scaffold |
-| 2 | Pointers, arrays, C strings | `strlen`, reverse in place |
-| 3 | `malloc` / `free`, structs | growable `int` array |
-| 4 | File I/O | read lines from `fixtures/` |
-| 5 | Headers and modules | split `lib.c` + `main.c` |
-| 6 | Data structures | hash table or mini shell |
+| Ex | Topic | Emulator skill |
+|----|--------|----------------|
+| 01 | Pointers, byte arrays | Memory buffers |
+| 02 | Bit ops, endianness | Opcode decoding |
+| 03 | File I/O | Load ROM |
+| 04 | Structs, bounds checks | CPU state |
+| 05 | Fetch cycle | Read instruction word |
+| 06 | `switch` dispatch | NOP + HALT |
+| 07 | More opcodes | MOV + ADD |
+| 08 | Run loop | Execute programs from disk |
 
-Add exercises under `src/` or `exercises/` as you go.
+```bash
+make -C c test EX=01   # one exercise
+make -C c test         # all (fails until you implement each)
+```
+
+Stretch after ex08: JMP, disassembler, debugger, heap-backed memory.
