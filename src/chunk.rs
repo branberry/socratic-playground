@@ -32,7 +32,6 @@ use std::fs;
 use std::path::Path;
 use thiserror::Error;
 
-use crate::chunk::ChunkError::EmptyDocument;
 // ---------------------------------------------------------------------------
 // 1a — Chunk
 // ---------------------------------------------------------------------------
@@ -141,7 +140,20 @@ impl TextChunker {
         }
     }
     pub fn chunk_text(&self, source: &str, text: &str) -> Result<Vec<Chunk>, ChunkError> {
-        todo!("chunk_text not implemented")
+        let mut chunks: Vec<Chunk> = vec![];
+        let src_len = source.len();
+
+        if src_len <= self.chunk_size {
+            let chunk = Chunk {
+                id: format!("{source}#0"),
+                source: source.to_string(),
+                text: text.to_string(),
+            };
+
+            chunks.push(chunk);
+        }
+
+        Ok(chunks)
     }
 }
 
