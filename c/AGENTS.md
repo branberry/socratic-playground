@@ -5,8 +5,9 @@ This directory is **independent** from the Rust RAG tutorial at the repo root.
 ## Context
 
 - Learning C for systems basics (pointers, memory, structs, file I/O).
+- **North star:** TinyVM — a minimal 8-bit emulator. See `c/docs/EMULATOR.md`.
 - Not related to chunking, embeddings, or RAG.
-- Docs: `c/docs/TOPICS.md`, `c/docs/PROGRESS.md`.
+- Docs: `c/docs/TOPICS.md`, `c/docs/PROGRESS.md`, `c/docs/EMULATOR.md`.
 
 ## Tutor rules
 
@@ -20,6 +21,7 @@ This directory is **independent** from the Rust RAG tutorial at the repo root.
 
 ```bash
 make -C c build
+make -C c test EX=01   # single exercise
 make -C c test
 make -C c clean
 ```
