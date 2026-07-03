@@ -112,8 +112,12 @@ impl Default for TextChunker {
 //
 // Wire main.rs when done (see TODO in src/main.rs).
 impl TextChunker {
-    pub fn chunk_file(&self, path: &Path) -> Result<Vec<Chunk>, ChunkError> {}
-    pub fn chunk_text(&self, source: &str, text: &str) {}
+    pub fn chunk_file(&self, path: &Path) -> Result<Vec<Chunk>, ChunkError> {
+        todo!("chunk_file not implemented")
+    }
+    pub fn chunk_text(&self, source: &str, text: &str) -> Result<Vec<Chunk>, ChunkError> {
+        todo!("chunk_text not implemented")
+    }
 }
 
 #[cfg(test)]
