@@ -76,11 +76,18 @@ pub enum ChunkError {
 // TODO(step-1c): impl fn new(chunk_size, chunk_overlap) -> Self
 
 pub struct TextChunker {
-    pub chunk_size: usize,
-    pub chunk_overlap: usize,
+    chunk_size: usize,
+    chunk_overlap: usize,
 }
 
-impl TextChunker {}
+impl TextChunker {
+    pub fn new(chunk_size: usize, chunk_overlap: usize) -> Self {
+        Self {
+            chunk_size: chunk_size,
+            chunk_overlap: chunk_overlap,
+        }
+    }
+}
 
 // ---------------------------------------------------------------------------
 // 1d — chunking logic
