@@ -28,8 +28,11 @@
 //!
 //! When 1d is done: `cargo test chunk` and `cargo run -- ingest`
 
+use std::fs;
 use std::path::Path;
 use thiserror::Error;
+
+use crate::chunk::ChunkError::EmptyDocument;
 // ---------------------------------------------------------------------------
 // 1a — Chunk
 // ---------------------------------------------------------------------------
@@ -113,7 +116,29 @@ impl Default for TextChunker {
 // Wire main.rs when done (see TODO in src/main.rs).
 impl TextChunker {
     pub fn chunk_file(&self, path: &Path) -> Result<Vec<Chunk>, ChunkError> {
-        todo!("chunk_file not implemented")
+        let source = path
+            .file_name()
+            .expect("File or directory does not exist")
+            .to_str()
+            .expect("should not be empty");
+
+        match fs::read_to_string(path) {
+            Ok(text) => {
+                if text.trim().is_empty() {
+                    return Err(ChunkError::EmptyDocument {
+                        name: source.to_string(),
+                    });
+                }
+
+                return self.chunk_text(source, &text);
+            }
+            Err(e) => {
+                return Err(ChunkError::Io {
+                    path: source.to_string(),
+                    source: e,
+                })
+            }
+        }
     }
     pub fn chunk_text(&self, source: &str, text: &str) -> Result<Vec<Chunk>, ChunkError> {
         todo!("chunk_text not implemented")
@@ -137,19 +162,19 @@ mod tests {
         assert!(format!("{:?}", chunk).contains("hello"));
     }
 
-    // #[test]
-    // fn chunk_text_rejects_empty_input() {
-    //     let chunker = TextChunker::default();
-    //     let err = chunker.chunk_text("doc.txt", "   ").unwrap_err();
-    //     assert!(matches!(err, ChunkError::EmptyDocument { .. }));
-    // }
+    #[test]
+    fn chunk_text_rejects_empty_input() {
+        let chunker = TextChunker::default();
+        let err = chunker.chunk_text("doc.txt", "   ").unwrap_err();
+        assert!(matches!(err, ChunkError::EmptyDocument { .. }));
+    }
 
-    // #[test]
-    // fn chunk_text_splits_long_documents() {
-    //     let chunker = TextChunker::new(10, 2);
-    //     let text = "abcdefghijklmnopqrstuvwxyz";
-    //     let chunks = chunker.chunk_text("doc.txt", text).unwrap();
-    //     assert!(chunks.len() > 1);
-    //     assert!(chunks.iter().all(|c| c.text.len() <= 10));
-    // }
+    #[test]
+    fn chunk_text_splits_long_documents() {
+        let chunker = TextChunker::new(10, 2);
+        let text = "abcdefghijklmnopqrstuvwxyz";
+        let chunks = chunker.chunk_text("doc.txt", text).unwrap();
+        assert!(chunks.len() > 1);
+        assert!(chunks.iter().all(|c| c.text.len() <= 10));
+    }
 }
