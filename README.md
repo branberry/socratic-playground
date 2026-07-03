@@ -1,3 +1,14 @@
+# Learning monorepo
+
+Two independent tracks — no shared code.
+
+| Track | Goal | Start here |
+|-------|------|------------|
+| **Rust — RAG** | Vector DBs & RAG CLI from scratch | [docs/STEPS.md](docs/STEPS.md) · `cargo test` |
+| **C — side quest** | Systems programming in C (unrelated to RAG) | [c/README.md](c/README.md) · `make -C c test` |
+
+---
+
 # Vector Databases & RAG in Rust
 
 A hands-on tutorial project. You build RAG from scratch, one module at a time.
@@ -47,6 +58,7 @@ Read the full guide in **[docs/STEPS.md](docs/STEPS.md)**.
 
 ```
 rust-rag-learn/
+├── c/                    # C side quest (separate from RAG)
 ├── data/sample_docs/     # Corpus to ingest
 ├── docs/STEPS.md         # Step-by-step guide (tutor mode)
 ├── src/
