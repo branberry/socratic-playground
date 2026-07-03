@@ -2,7 +2,7 @@
 
 Update this file at the **end of every session** — especially the “Next 5-min task” line. Future-you re-enters here.
 
-**Roadmap:** [ROADMAP.md](ROADMAP.md) · **Implementation:** [STEPS.md](STEPS.md)
+**Roadmap:** [ROADMAP.md](ROADMAP.md) · **Implementation:** [STEPS.md](STEPS.md) · **Weekly routine:** [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md)
 
 ---
 

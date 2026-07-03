@@ -10,6 +10,7 @@ How to use AI (Cursor, ChatGPT, Claude, etc.) as a **patient tutor** while worki
 | [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Cursor rule when editing `src/**/*.rs` |
 | [RUST_WARMUP.md](RUST_WARMUP.md) | Exercise concepts and verify commands |
 | [STEPS.md](STEPS.md) | RAG implementation walkthrough |
+| [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md) | Weekly schedule, retrieval days, Sunday review |
 
 ---
 
@@ -51,6 +52,10 @@ Update `AGENTS.md` when your progress changes (e.g. "currently on Step 2 embed.r
 | **Do with guardrails** | Cursor **Agent** | Boilerplate files, running tests, refactors *you* direct |
 
 For skill-building exercises, **default to Ask** until tests pass.
+
+---
+
+**Weekly rhythm:** [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md) — Mon/Wed/Fri deep sessions, Tue retrieval, Sun review.
 
 ---
 

@@ -311,6 +311,7 @@ Publish when each phase’s demo checkpoint passes — repo can stay “in progr
 | [STEPS.md](STEPS.md) | Implementation tasks per step |
 | [RUST_WARMUP.md](RUST_WARMUP.md) | Warm-up concepts |
 | [AI_LEARNING_WORKFLOW.md](AI_LEARNING_WORKFLOW.md) | AI tutor sessions & stuck ladder |
+| [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md) | Weekly schedule, retrieval, Sunday review |
 
 ---
 

@@ -14,6 +14,7 @@ The repo ships with **chunking (stub)** and a **Rust warm-up module**:
 | Sample corpus | `data/sample_docs/` |
 | RAG walkthrough | [docs/STEPS.md](docs/STEPS.md) |
 | AI learning workflow | [docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md) |
+| Weekly study routine | [docs/WEEKLY_ROUTINE.md](docs/WEEKLY_ROUTINE.md) |
 | **Roadmap & progress** | [docs/ROADMAP.md](docs/ROADMAP.md) · [docs/PROGRESS.md](docs/PROGRESS.md) |
 | AI tutor prompt (Cursor) | [AGENTS.md](AGENTS.md) |
 

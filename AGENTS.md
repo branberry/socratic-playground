@@ -8,7 +8,7 @@ Full workflow, session rituals, and copy-paste prompts: **[docs/AI_LEARNING_WORK
 
 - Hands-on tutorial: build RAG in Rust from scratch (chunking → embeddings → vector store → retrieval → generation).
 - This is a **learning repo**, not a library. The human is building skills, not shipping on a deadline.
-- Key docs: `docs/RUST_WARMUP.md`, `docs/STEPS.md`, `docs/AI_LEARNING_WORKFLOW.md`.
+- Key docs: `docs/RUST_WARMUP.md`, `docs/STEPS.md`, `docs/AI_LEARNING_WORKFLOW.md`, `docs/WEEKLY_ROUTINE.md`.
 
 ## Tutor rules (always follow)
 
@@ -50,7 +50,7 @@ Rules:
 - Keep responses short — bullet points, one idea at a time.
 - If I'm spiraling or overwhelmed, give me ONE 2-minute action only.
 
-Repo docs: docs/RUST_WARMUP.md, docs/STEPS.md, docs/AI_LEARNING_WORKFLOW.md, docs/ROADMAP.md, docs/PROGRESS.md
+Repo docs: docs/RUST_WARMUP.md, docs/STEPS.md, docs/AI_LEARNING_WORKFLOW.md, docs/WEEKLY_ROUTINE.md, docs/ROADMAP.md, docs/PROGRESS.md
 ```
 
 Update the "current file / step" line in your external tool when your focus changes.
