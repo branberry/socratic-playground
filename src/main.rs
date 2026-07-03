@@ -61,9 +61,7 @@ fn ingest(data_dir: &PathBuf) -> Result<()> {
         data_dir.display()
     );
 
-    println!(
-        "\n{file_count} file(s), {total_bytes} bytes total. Step 1: build src/chunk.rs"
-    );
+    println!("\n{file_count} file(s), {total_bytes} bytes total. Step 1: build src/chunk.rs");
 
     Ok(())
 }
