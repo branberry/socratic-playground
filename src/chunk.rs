@@ -194,11 +194,95 @@ mod tests {
     }
 
     #[test]
+    fn chunk_text_rejects_empty_string() {
+        let chunker = TextChunker::default();
+        let err = chunker.chunk_text("doc.txt", "").unwrap_err();
+        assert!(matches!(err, ChunkError::EmptyDocument { name } if name == "doc.txt"));
+    }
+
+    #[test]
     fn chunk_text_splits_long_documents() {
         let chunker = TextChunker::new(10, 2);
         let text = "abcdefghijklmnopqrstuvwxyz";
         let chunks = chunker.chunk_text("doc.txt", text).unwrap();
         assert!(chunks.len() > 1);
         assert!(chunks.iter().all(|c| c.text.len() <= 10));
+    }
+
+    #[test]
+    fn chunk_text_exact_windows_and_overlap() {
+        let chunker = TextChunker::new(10, 2);
+        let chunks = chunker
+            .chunk_text("doc.txt", "abcdefghijklmnopqrstuvwxyz")
+            .unwrap();
+
+        assert_eq!(chunks.len(), 4);
+        assert_eq!(chunks[0].text, "abcdefghij");
+        assert_eq!(chunks[1].text, "ijklmnopqr");
+        assert_eq!(chunks[2].text, "qrstuvwxyz");
+        assert_eq!(chunks[3].text, "yz");
+    }
+
+    #[test]
+    fn chunk_text_single_chunk_when_text_fits_window() {
+        let chunker = TextChunker::new(500, 50);
+        let chunks = chunker.chunk_text("short.txt", "hello world").unwrap();
+
+        assert_eq!(chunks.len(), 1);
+        assert_eq!(chunks[0].text, "hello world");
+        assert_eq!(chunks[0].id, "short.txt#0");
+    }
+
+    #[test]
+    fn chunk_text_assigns_sequential_ids() {
+        let chunker = TextChunker::new(4, 1);
+        let chunks = chunker.chunk_text("src.md", "abcdefgh").unwrap();
+
+        assert_eq!(chunks.len(), 3);
+        assert_eq!(chunks[0].id, "src.md#0");
+        assert_eq!(chunks[1].id, "src.md#1");
+        assert_eq!(chunks[2].id, "src.md#2");
+    }
+
+    #[test]
+    fn chunk_text_propagates_source_to_every_chunk() {
+        let chunker = TextChunker::new(3, 0);
+        let chunks = chunker.chunk_text("notes.txt", "abcdef").unwrap();
+
+        assert!(chunks.len() >= 2);
+        assert!(chunks.iter().all(|c| c.source == "notes.txt"));
+    }
+
+    #[test]
+    fn chunk_text_last_chunk_can_be_shorter_than_window() {
+        let chunker = TextChunker::new(10, 2);
+        let chunks = chunker
+            .chunk_text("doc.txt", "abcdefghijklmnopqrstuvwxyz")
+            .unwrap();
+
+        let last = chunks.last().expect("should have chunks");
+        assert!(last.text.len() < 10);
+        assert_eq!(last.text, "yz");
+    }
+
+    #[test]
+    fn chunk_text_step_is_chunk_size_minus_overlap() {
+        // window=5, overlap=1 → step=4 → two chunks with 1-char overlap
+        let chunker = TextChunker::new(5, 1);
+        let chunks = chunker.chunk_text("doc.txt", "abcdefgh").unwrap();
+
+        assert_eq!(chunks.len(), 2);
+        assert_eq!(chunks[0].text, "abcde");
+        assert_eq!(chunks[1].text, "efgh");
+    }
+
+    #[test]
+    fn chunk_text_zero_overlap_produces_adjacent_non_overlapping_windows() {
+        let chunker = TextChunker::new(4, 0);
+        let chunks = chunker.chunk_text("doc.txt", "abcdefgh").unwrap();
+
+        assert_eq!(chunks.len(), 2);
+        assert_eq!(chunks[0].text, "abcd");
+        assert_eq!(chunks[1].text, "efgh");
     }
 }
