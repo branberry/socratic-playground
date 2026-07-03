@@ -144,24 +144,14 @@ impl TextChunker {
 
         let mut id_index = 0;
         for i in (0..text_len).step_by(self.chunk_size - self.chunk_overlap) {
-            if i + self.chunk_size >= text_len {
-                let chunk = Chunk {
-                    id: format!("{source}#{id_index}"),
-                    source: source.to_string(),
-                    text: text[i..].to_string(),
-                };
+            let end = text_len.min(i + self.chunk_size);
+            let chunk = Chunk {
+                id: format!("{source}#{id_index}"),
+                source: source.to_string(),
+                text: text[i..end].to_string(),
+            };
 
-                chunks.push(chunk);
-            } else {
-                let chunk = Chunk {
-                    id: format!("{source}#{id_index}"),
-                    source: source.to_string(),
-                    text: text[i..i + self.chunk_size].to_string(),
-                };
-
-                chunks.push(chunk);
-            }
-
+            chunks.push(chunk);
             id_index += 1;
         }
 
