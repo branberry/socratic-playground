@@ -1,0 +1,33 @@
+name: C
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "c/**"
+      - ".github/workflows/c.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "c/**"
+      - ".github/workflows/c.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: c
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: make build
+
+      - name: Test
+        run: make test
