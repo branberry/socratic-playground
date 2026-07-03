@@ -123,12 +123,6 @@ impl TextChunker {
 
         match fs::read_to_string(path) {
             Ok(text) => {
-                if text.trim().is_empty() {
-                    return Err(ChunkError::EmptyDocument {
-                        name: source.to_string(),
-                    });
-                }
-
                 return self.chunk_text(source, &text);
             }
             Err(e) => {
@@ -141,16 +135,34 @@ impl TextChunker {
     }
     pub fn chunk_text(&self, source: &str, text: &str) -> Result<Vec<Chunk>, ChunkError> {
         let mut chunks: Vec<Chunk> = vec![];
-        let src_len = source.len();
+        let text_len = text.len();
+        if text.trim().is_empty() {
+            return Err(ChunkError::EmptyDocument {
+                name: source.to_string(),
+            });
+        }
 
-        if src_len <= self.chunk_size {
-            let chunk = Chunk {
-                id: format!("{source}#0"),
-                source: source.to_string(),
-                text: text.to_string(),
-            };
+        let mut id_index = 0;
+        for i in (0..text_len).step_by(self.chunk_overlap) {
+            if i + self.chunk_size >= text_len {
+                let chunk = Chunk {
+                    id: format!("{source}#{id_index}"),
+                    source: source.to_string(),
+                    text: text[i..].to_string(),
+                };
 
-            chunks.push(chunk);
+                chunks.push(chunk);
+            } else {
+                let chunk = Chunk {
+                    id: format!("{source}#{id_index}"),
+                    source: source.to_string(),
+                    text: text[i..i + self.chunk_size].to_string(),
+                };
+
+                chunks.push(chunk);
+            }
+
+            id_index += 1;
         }
 
         Ok(chunks)
