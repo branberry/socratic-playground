@@ -29,16 +29,17 @@ uint8_t lo_nibble(uint8_t byte) {
  */
 
 uint16_t pack_be(uint8_t hi, uint8_t lo) {
-  (void)hi;
-  (void)lo;
+  uint16_t result = hi << 8;
+  result += lo;
   /* Combine hi and lo into one 16-bit word; hi is the high byte. */
-  return 0;
+  return result;
 }
 
 void unpack_be(uint16_t word, uint8_t *hi, uint8_t *lo) {
-  (void)word;
-  (void)hi;
-  (void)lo;
+
+  *lo = 0x00FF & word;
+  word = word >> 8;
+  *hi = word;
   /*
    * Split word into its two bytes and write them through hi and lo.
    * unpack_be(0xDEAD, &hi, &lo) should set hi = 0xDE and lo = 0xAD.
