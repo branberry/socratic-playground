@@ -14,6 +14,9 @@ void test_ex05(void);
 void test_ex06(void);
 void test_ex07(void);
 void test_ex08(void);
+void test_ex09(void);
+void test_ex10(void);
+void test_ex11(void);
 
 static int report(void) {
     printf("Tests: %d passed, %d failed\n", g_passes, g_failures);
@@ -37,8 +40,14 @@ static void run_one(const char *id) {
         RUN(test_ex07);
     } else if (strcmp(id, "08") == 0) {
         RUN(test_ex08);
+    } else if (strcmp(id, "09") == 0) {
+        RUN(test_ex09);
+    } else if (strcmp(id, "10") == 0) {
+        RUN(test_ex10);
+    } else if (strcmp(id, "11") == 0) {
+        RUN(test_ex11);
     } else {
-        fprintf(stderr, "Unknown exercise: %s (use 01-08)\n", id);
+        fprintf(stderr, "Unknown exercise: %s (use 01-11)\n", id);
         g_failures++;
     }
 }
@@ -57,5 +66,8 @@ int main(int argc, char **argv) {
     RUN(test_ex06);
     RUN(test_ex07);
     RUN(test_ex08);
+    RUN(test_ex09);
+    RUN(test_ex10);
+    RUN(test_ex11);
     return report();
 }

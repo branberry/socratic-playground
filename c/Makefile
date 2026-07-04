@@ -12,7 +12,10 @@ EXercise_SRC := \
 	exercises/ex04_cpu.c \
 	exercises/ex05_fetch.c \
 	exercises/ex06_step.c \
-	exercises/ex08_run.c
+	exercises/ex08_run.c \
+	exercises/ex09_ptr.c \
+	exercises/ex10_heap.c \
+	exercises/ex11_dynbuf.c
 
 TEST_SRC := \
 	tests/run_tests.c \
@@ -23,7 +26,10 @@ TEST_SRC := \
 	tests/ex05_test.c \
 	tests/ex06_test.c \
 	tests/ex07_test.c \
-	tests/ex08_test.c
+	tests/ex08_test.c \
+	tests/ex09_test.c \
+	tests/ex10_test.c \
+	tests/ex11_test.c
 
 .PHONY: all build test clean fixtures
 

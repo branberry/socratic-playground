@@ -37,7 +37,9 @@ c/
 
 ## Current state
 
-Eight exercise stubs with failing tests. Start with **ex01** (`reverse_bytes`).
+Eleven exercise stubs with failing tests. Start with **ex01** (`reverse_bytes`).
+
+**Pointer & heap track:** ex09–ex11 (can run in parallel after ex01). See [docs/TOPICS.md](docs/TOPICS.md).
 
 ## Docs
 

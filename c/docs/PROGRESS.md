@@ -23,6 +23,12 @@ Update at the end of each C session (separate from root `docs/PROGRESS.md`).
 - [ ] **ex07** — extend `cpu_step`: MOV + ADD
 - [ ] **ex08** — `cpu_run`, `cpu_load_rom`
 
+### Pointer & heap track
+
+- [ ] **ex09** — `byte_at`, `swap_bytes`, `find_byte`, `ptr_distance`
+- [ ] **ex10** — `make_zeroed`, `clone_bytes`, `bytes_free`
+- [ ] **ex11** — `ByteBuf` push / grow / free
+
 ## Log
 
 | Date | Done | Next |

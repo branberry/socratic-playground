@@ -13,9 +13,20 @@ Arc toward a **simple emulator** (TinyVM). Full spec: [EMULATOR.md](EMULATOR.md)
 | 07 | More opcodes | MOV + ADD |
 | 08 | Run loop | Execute programs from disk |
 
+### Pointer & heap track (parallel to emulator)
+
+Do these anytime after **ex01** — especially if pointers / `malloc` feel rusty.
+
+| Ex | Topic | Skills |
+|----|--------|--------|
+| 09 | Pointer arithmetic | `&`, `*`, bounds, scan a range |
+| 10 | Heap allocation | `calloc`, `malloc`, `memcpy`, `free` |
+| 11 | Ownership | growable `ByteBuf`, who frees what |
+
 ```bash
+make -C c test EX=09   # pointer drills only
 make -C c test EX=01   # one exercise
 make -C c test         # all (fails until you implement each)
 ```
 
-Stretch after ex08: JMP, disassembler, debugger, heap-backed memory.
+Stretch after ex08: JMP, disassembler, debugger, swap TinyVM to heap-backed memory (ex11 helps).

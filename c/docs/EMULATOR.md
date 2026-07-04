@@ -58,7 +58,7 @@ After ex08, `cpu_load_rom` + `cpu_run` should leave `regs[2] == 5` and `halted =
 ## After ex08 (stretch)
 
 - **JMP** — change `pc` mid-instruction
-- **malloc** — dynamic memory size instead of fixed 256 bytes
+- **malloc** — dynamic memory size instead of fixed 256 bytes (see **ex11** `ByteBuf`)
 - **Disassembler** — print mnemonics for a ROM
 - **Debugger** — step, dump regs, watch memory
 
