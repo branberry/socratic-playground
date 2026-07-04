@@ -10,9 +10,7 @@
 
 uint8_t hi_nibble(uint8_t byte) {
   /* Return the upper 4 bits of byte as a value 0x0–0xF. */
-  uint8_t mask = 0x0F;
-  byte = byte >> 4;
-  return byte & mask;
+  return byte >> 4;
 }
 
 uint8_t lo_nibble(uint8_t byte) {
@@ -29,19 +27,17 @@ uint8_t lo_nibble(uint8_t byte) {
  */
 
 uint16_t pack_be(uint8_t hi, uint8_t lo) {
-  uint16_t result = hi << 8;
-  result += lo;
+  uint16_t result = hi << 8 | lo;
   /* Combine hi and lo into one 16-bit word; hi is the high byte. */
   return result;
 }
-
+/*
+ * Split word into its two bytes and write them through hi and lo.
+ * unpack_be(0xDEAD, &hi, &lo) should set hi = 0xDE and lo = 0xAD.
+ */
 void unpack_be(uint16_t word, uint8_t *hi, uint8_t *lo) {
 
   *lo = 0x00FF & word;
-  word = word >> 8;
-  *hi = word;
-  /*
-   * Split word into its two bytes and write them through hi and lo.
-   * unpack_be(0xDEAD, &hi, &lo) should set hi = 0xDE and lo = 0xAD.
-   */
+  word = (uint8_t)(word >> 8);
+  *hi = (uint8_t)(word);
 }
