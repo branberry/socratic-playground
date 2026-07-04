@@ -16,6 +16,8 @@ make -C c clean
 
 Work in `exercises/exNN_*.c`. One exercise at a time — don't peek ahead.
 
+**Tutor mode:** AI follows the [Socratic method](../docs/SOCRATIC_METHOD.md) — questions before answers. See [AGENTS.md](AGENTS.md).
+
 ## Layout
 
 ```

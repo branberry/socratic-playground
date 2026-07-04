@@ -25,6 +25,7 @@ The repo ships with **chunking (stub)** and a **Rust warm-up module**:
 | Sample corpus | `data/sample_docs/` |
 | RAG walkthrough | [docs/STEPS.md](docs/STEPS.md) |
 | AI learning workflow | [docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md) |
+| **Socratic tutor contract** | [docs/SOCRATIC_METHOD.md](docs/SOCRATIC_METHOD.md) |
 | Weekly study routine | [docs/WEEKLY_ROUTINE.md](docs/WEEKLY_ROUTINE.md) |
 | **Roadmap & progress** | [docs/ROADMAP.md](docs/ROADMAP.md) · [docs/PROGRESS.md](docs/PROGRESS.md) |
 | AI tutor prompt (Cursor) | [AGENTS.md](AGENTS.md) |
@@ -83,16 +84,21 @@ flowchart LR
     RAG --> LLM[LLM - Step 5]
 ```
 
-## Tutor mode
+## Tutor mode (Socratic)
 
-This is a learning repo, not a library. **[AGENTS.md](AGENTS.md)** tells Cursor (and other AI tools) how to tutor you; **[docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md)** has session rituals, stuck-ladder prompts, and scaffold-vs-replacement guidance.
+This is a learning repo, not a library. Tutoring follows the **[Socratic method](docs/SOCRATIC_METHOD.md)** — questions before answers, hints that escalate only when you're stuck.
+
+- **[AGENTS.md](AGENTS.md)** — Rust RAG tutor prompt (Cursor reads this automatically)
+- **[c/AGENTS.md](c/AGENTS.md)** — C side quest tutor prompt
+- **[docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md)** — session rituals, stuck ladder, copy-paste prompts
 
 When you ask for help:
 
-1. You'll be asked what you've tried first
-2. Concepts get explained — full solutions don't get pasted upfront
-3. Hints escalate only if you're stuck
-4. Your code gets reviewed critically
+1. You'll be asked what you've tried first (or get one small first action)
+2. The AI asks a targeted question before giving a hint
+3. Concepts get explained — full solutions don't get pasted upfront
+4. Hints escalate only if you're stuck after honest attempts
+5. After green tests, you'll be asked to explain why in one sentence
 
 **First assignment:** Read the sample docs, run `cargo run -- ingest`, then explain in your own words why RAG doesn't embed whole books as one vector.
 

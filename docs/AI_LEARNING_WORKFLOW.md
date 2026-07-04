@@ -6,8 +6,10 @@ How to use AI (Cursor, ChatGPT, Claude, etc.) as a **patient tutor** while worki
 
 | File | Purpose |
 |------|---------|
+| [SOCRATIC_METHOD.md](SOCRATIC_METHOD.md) | **Core tutor contract** — questions before answers |
 | [AGENTS.md](../AGENTS.md) | Tutor system prompt — Cursor reads this automatically |
-| [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Cursor rule when editing `src/**/*.rs` |
+| [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Socratic rule when editing `src/**/*.rs` |
+| [.cursor/rules/c-tutor.mdc](../.cursor/rules/c-tutor.mdc) | Socratic rule when editing `c/**` |
 | [RUST_WARMUP.md](RUST_WARMUP.md) | Exercise concepts and verify commands |
 | [STEPS.md](STEPS.md) | RAG implementation walkthrough |
 | [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md) | Weekly schedule, retrieval days, Sunday review |
@@ -16,14 +18,37 @@ How to use AI (Cursor, ChatGPT, Claude, etc.) as a **patient tutor** while worki
 
 ## The one rule
 
-Think of AI as a **patient tutor sitting next to you**, not a **homework machine**.
+Think of AI as a **Socratic tutor** sitting next to you — not a **homework machine**.
+
+Full contract: **[SOCRATIC_METHOD.md](SOCRATIC_METHOD.md)**. In short: the AI asks before it tells, one question at a time, and only escalates hints when you're stuck.
 
 - ✅ "Help me understand why this doesn't compile."
-- ✅ "What's the smallest next step?"
+- ✅ "Ask me one question before hinting."
 - ✅ "Quiz me on what I just implemented."
 - ❌ "Just write exercise 9 for me."
 
 This repo's tutor contract (see [README](../README.md#tutor-mode)) applies to humans and AI alike.
+
+---
+
+## Socratic method in practice
+
+| Situation | You ask | AI should |
+|-----------|---------|-----------|
+| Haven't started | "Smallest first line?" | One action, no code dump |
+| Test failed | Paste error + your attempt | **One question** before hint |
+| Concept fuzzy | "No code — why does X work?" | Short concept + quiz question |
+| 3 tries failed | Stuck ladder level 4 | Minimal teaching snippet |
+
+**Invite Socratic mode explicitly:**
+
+```
+Use the Socratic method. I tried:
+[paste attempt]
+Ask me ONE question before giving a hint.
+```
+
+See [SOCRATIC_METHOD.md](SOCRATIC_METHOD.md) for the full escalation ladder and question bank.
 
 ---
 
@@ -120,6 +145,7 @@ Here's my attempt and the compiler/test output:
 [paste cargo test output]
 
 What is ONE thing wrong? Ask me a question before hinting.
+(See SOCRATIC_METHOD.md — level 2.)
 ```
 
 ### Level 3 — Concept confusion
