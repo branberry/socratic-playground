@@ -2,6 +2,7 @@ use std::env;
 use std::path::PathBuf;
 
 use anyhow::{Context, Result};
+use rust_rag_learn::chunk::TextChunker;
 
 fn main() -> Result<()> {
     let data_dir = parse_data_dir()?;
@@ -53,6 +54,12 @@ fn ingest(data_dir: &PathBuf) -> Result<()> {
             path.file_name().unwrap_or_default().to_string_lossy(),
             text.len()
         );
+
+        let chunker = TextChunker::default();
+
+        let chunks = chunker.chunk_file(&path).expect("Could not chunk file");
+
+        println!("{:?}", chunks);
     }
 
     anyhow::ensure!(
