@@ -5,6 +5,7 @@
 //! Work through the steps in `docs/STEPS.md` — you create each module yourself.
 
 pub mod chunk;
+pub mod embed;
 pub mod rust_warmup;
 
 // TODO(step-1): Uncomment when you define these in chunk.rs:
