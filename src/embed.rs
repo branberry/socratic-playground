@@ -1,6 +1,8 @@
 use std::hash::{DefaultHasher, Hash, Hasher};
 
-pub fn normalize(vector: &mut [f32]) {}
+pub fn normalize(vector: &mut Vec<f32>) {
+    let l2_norm: f32 = vector.iter().map(|x| x * x).sum();
+}
 
 pub fn cosine_similarity() {}
 

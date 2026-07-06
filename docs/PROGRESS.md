@@ -28,16 +28,16 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 ### Phase 0 — Warm-up
 
 - [x] Exercises 1–8 passing
-- [ ] Exercise 9 — `borrow_first_window`
-- [ ] `cargo test rust_warmup` — all green
-- [ ] Can explain why `Chunk` uses `String` not `&str` (one sentence)
+- [x] Exercise 9 — `borrow_first_window`
+- [x] `cargo test rust_warmup` — all green
+- [x] Can explain why `Chunk` uses `String` not `&str` (one sentence)
 
 ### Phase 1 — Chunking
 
-- [ ] Step 0 complete (ingest run, can explain why not one vector per book)
-- [ ] Step 1 — `chunk_text` implemented
-- [ ] `cargo test chunk` green
-- [ ] `cargo run -- ingest` shows multiple chunks for long docs
+- [x] Step 0 complete (ingest run, can explain why not one vector per book)
+- [x] Step 1 — `chunk_text` implemented
+- [x] `cargo test chunk` green
+- [x] `cargo run -- ingest` shows multiple chunks for long docs
 - [ ] Demo checkpoint captured (screenshot/log)
 - [ ] Blog post 1 drafted or published
 
