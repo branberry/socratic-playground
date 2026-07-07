@@ -1,7 +1,14 @@
 use std::hash::{DefaultHasher, Hash, Hasher};
 
 pub fn normalize(vector: &mut Vec<f32>) {
-    let l2_norm: f32 = vector.iter().map(|x| x * x).sum();
+    let l2_norm: f32 = vector.iter().map(|x| x * x).sum::<f32>().sqrt();
+
+    if l2_norm == 0.0 {
+        return;
+    }
+    for i in 0..vector.len() {
+        vector[i] = vector[i] / l2_norm;
+    }
 }
 
 pub fn cosine_similarity() {}
@@ -62,5 +69,48 @@ mod tests {
         let embedder = MockEmbedder::new(16);
         let vector = embedder.embed("hello world");
         assert!(vector.iter().any(|&value| value != 0.0));
+    }
+
+    fn magnitude(v: &[f32]) -> f32 {
+        v.iter().map(|x| x * x).sum::<f32>().sqrt()
+    }
+
+    #[test]
+    fn normalize_produces_unit_length() {
+        let mut v = vec![3.0, 4.0];
+        normalize(&mut v);
+        let len = magnitude(&v);
+        assert!((len - 1.0).abs() < 1e-5, "expected unit length, got {len}");
+    }
+
+    #[test]
+    fn normalize_known_vector() {
+        let mut v = vec![3.0, 4.0];
+        normalize(&mut v);
+        assert!((v[0] - 0.6).abs() < 1e-5);
+        assert!((v[1] - 0.8).abs() < 1e-5);
+    }
+
+    #[test]
+    fn normalize_preserves_direction() {
+        let mut v = vec![2.0, 6.0, 4.0];
+        let ratio_before = v[1] / v[0];
+        normalize(&mut v);
+        let ratio_after = v[1] / v[0];
+        assert!((ratio_before - ratio_after).abs() < 1e-5);
+    }
+
+    #[test]
+    fn normalize_empty_vector_does_not_panic() {
+        let mut v: Vec<f32> = vec![];
+        normalize(&mut v);
+        assert!(v.is_empty());
+    }
+
+    #[test]
+    fn normalize_empty_vector_does_not_panic_on_all_zeroes() {
+        let mut v: Vec<f32> = vec![0.0, 0.0, 0.0];
+        normalize(&mut v);
+        assert!(v.iter().sum::<f32>() == 0.0);
     }
 }
