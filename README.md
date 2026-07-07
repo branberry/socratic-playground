@@ -1,109 +1,41 @@
-# Learning monorepo
+# Learning playground (monorepo)
 
-Two independent tracks — no shared code.
+Independent learning tracks — shared **Socratic** tutor contract, no shared code.
 
-| Track | Goal | Start here |
-|-------|------|------------|
-| **Rust — RAG** | Vector DBs & RAG CLI from scratch | [docs/STEPS.md](docs/STEPS.md) · `cargo test` |
-| **C — side quest** | Systems C → simple emulator (TinyVM) | [c/README.md](c/README.md) · `make -C c test EX=01` |
+| Track | Directory | Start here |
+|-------|-----------|------------|
+| **Rust — RAG** | [rust-rag-learn/](rust-rag-learn/) | `cargo test -p rust-rag-learn` |
+| **Rust — WebGPU** | [rust-webgpu/](rust-webgpu/) | `cargo run -p rust-webgpu` (scaffold) |
+| **C — TinyVM** | [c/](c/) | `make -C c test EX=01` |
 
----
+## Shared docs
 
-# Vector Databases & RAG in Rust
+| Doc | Purpose |
+|-----|---------|
+| [docs/SOCRATIC_METHOD.md](docs/SOCRATIC_METHOD.md) | Core tutor contract — questions before answers |
+| [docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md) | Session rituals, stuck ladder |
 
-A hands-on tutorial project. You build RAG from scratch, one module at a time.
+Each track has its own `AGENTS.md`, `docs/`, and verify commands.
 
-## Current state (Step 0)
+## Layout
 
-The repo ships with **chunking (stub)** and a **Rust warm-up module**:
+```
+.
+├── Cargo.toml              # workspace (rust-rag-learn, rust-webgpu)
+├── docs/                   # shared pedagogy
+├── rust-rag-learn/         # RAG CLI tutorial
+├── rust-webgpu/            # WebGPU tutorial (scaffold)
+└── c/                      # C emulator side quest
+```
 
-| What | Where |
-|------|-------|
-| Document chunking (stub) | `src/chunk.rs` |
-| Rust warm-up exercises | `src/rust_warmup.rs` — [docs/RUST_WARMUP.md](docs/RUST_WARMUP.md) |
-| Ingest CLI | `src/main.rs` |
-| Sample corpus | `data/sample_docs/` |
-| RAG walkthrough | [docs/STEPS.md](docs/STEPS.md) |
-| AI learning workflow | [docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md) |
-| **Socratic tutor contract** | [docs/SOCRATIC_METHOD.md](docs/SOCRATIC_METHOD.md) |
-| Weekly study routine | [docs/WEEKLY_ROUTINE.md](docs/WEEKLY_ROUTINE.md) |
-| **Roadmap & progress** | [docs/ROADMAP.md](docs/ROADMAP.md) · [docs/PROGRESS.md](docs/PROGRESS.md) |
-| AI tutor prompt (Cursor) | [AGENTS.md](AGENTS.md) |
-
-`search` and `ask` don't exist yet — you'll add them when you build retrieval and RAG.
-
-## Quick start
+## Workspace commands
 
 ```bash
-cargo test rust_warmup   # 9 exercises — lifetimes are 8 & 9
-cargo test
-cargo run -- ingest
+cargo test --workspace          # all Rust crates
+cargo test -p rust-rag-learn    # one crate
+make -C c test EX=01            # C exercises
 ```
 
-## What you'll build
+## Tutor mode
 
-| Step | You create | Concept |
-|------|------------|---------|
-| 1 | (implement) `chunk.rs` | Sliding-window chunking |
-| 2 | `embed.rs` | Vectors, cosine similarity, mock embedder |
-| 3 | `store.rs` | In-memory vector search |
-| 4 | `retrieve.rs` + `search` CLI | Query → context |
-| 5 | `rag.rs` + `ask` CLI | Prompt + LLM generation |
-| 6 | Traits + optional Qdrant/LanceDB | Swappable backends |
-
-Read the full guide in **[docs/STEPS.md](docs/STEPS.md)**.
-
-**Long-term plan:** [docs/ROADMAP.md](docs/ROADMAP.md) (blog series + Qdrant + peer polish) · track sessions in [docs/PROGRESS.md](docs/PROGRESS.md).
-
-## Project layout
-
-```
-rust-rag-learn/
-├── c/                    # C side quest (separate from RAG)
-├── data/sample_docs/     # Corpus to ingest
-├── docs/STEPS.md         # Step-by-step guide (tutor mode)
-├── src/
-│   ├── chunk.rs          # Step 1 — sliding-window chunking
-│   ├── rust_warmup.rs    # Rust exercises (do these first if rusty)
-│   ├── lib.rs
-│   └── main.rs           # ingest today; search/ask later
-└── (you add embed.rs, store.rs, retrieve.rs, rag.rs)
-```
-
-## Architecture (target)
-
-```mermaid
-flowchart LR
-    Docs[Text files] --> Chunker
-    Chunker --> Embedder
-    Embedder --> VectorStore
-    Query[User question] --> Embedder
-    Embedder --> Retriever
-    VectorStore --> Retriever
-    Retriever --> RAG[RAG pipeline]
-    RAG --> LLM[LLM - Step 5]
-```
-
-## Tutor mode (Socratic)
-
-This is a learning repo, not a library. Tutoring follows the **[Socratic method](docs/SOCRATIC_METHOD.md)** — questions before answers, hints that escalate only when you're stuck.
-
-- **[AGENTS.md](AGENTS.md)** — Rust RAG tutor prompt (Cursor reads this automatically)
-- **[c/AGENTS.md](c/AGENTS.md)** — C side quest tutor prompt
-- **[docs/AI_LEARNING_WORKFLOW.md](docs/AI_LEARNING_WORKFLOW.md)** — session rituals, stuck ladder, copy-paste prompts
-
-When you ask for help:
-
-1. You'll be asked what you've tried first (or get one small first action)
-2. The AI asks a targeted question before giving a hint
-3. Concepts get explained — full solutions don't get pasted upfront
-4. Hints escalate only if you're stuck after honest attempts
-5. After green tests, you'll be asked to explain why in one sentence
-
-**First assignment:** Read the sample docs, run `cargo run -- ingest`, then explain in your own words why RAG doesn't embed whole books as one vector.
-
-## After this tutorial
-
-- [Qdrant Rust client](https://github.com/qdrant/rust-client) for persistent ANN search
-- [fastembed-rs](https://github.com/Anush008/fastembed-rs) for local ONNX embeddings
-- [candle](https://github.com/huggingface/candle) for running models in pure Rust
+Root **[AGENTS.md](AGENTS.md)** maps the monorepo. Per-project tutors live in each directory. All tracks follow [docs/SOCRATIC_METHOD.md](docs/SOCRATIC_METHOD.md).

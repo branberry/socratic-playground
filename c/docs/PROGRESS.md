@@ -1,6 +1,6 @@
 # C side quest — progress
 
-Update at the end of each C session (separate from root `docs/PROGRESS.md`).
+Update at the end of each C session (separate from `rust-rag-learn/docs/PROGRESS.md`).
 
 **North star:** [EMULATOR.md](EMULATOR.md) — build TinyVM, a minimal 8-bit emulator.
 

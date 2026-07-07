@@ -1,18 +1,22 @@
-# AI learning workflow — Rust & RAG
+# AI learning workflow
 
-How to use AI (Cursor, ChatGPT, Claude, etc.) as a **patient tutor** while working through this repo — without letting it do the learning for you.
+How to use AI (Cursor, ChatGPT, Claude, etc.) as a **Socratic tutor** in this monorepo — without letting it do the learning for you.
 
 **Related files:**
 
 | File | Purpose |
 |------|---------|
 | [SOCRATIC_METHOD.md](SOCRATIC_METHOD.md) | **Core tutor contract** — questions before answers |
-| [AGENTS.md](../AGENTS.md) | Tutor system prompt — Cursor reads this automatically |
-| [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Socratic rule when editing `src/**/*.rs` |
-| [.cursor/rules/c-tutor.mdc](../.cursor/rules/c-tutor.mdc) | Socratic rule when editing `c/**` |
-| [RUST_WARMUP.md](RUST_WARMUP.md) | Exercise concepts and verify commands |
-| [STEPS.md](STEPS.md) | RAG implementation walkthrough |
-| [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md) | Weekly schedule, retrieval days, Sunday review |
+| [AGENTS.md](../AGENTS.md) | Monorepo tutor map — Cursor reads this automatically |
+| [rust-rag-learn/AGENTS.md](../rust-rag-learn/AGENTS.md) | RAG project tutor |
+| [rust-webgpu/AGENTS.md](../rust-webgpu/AGENTS.md) | WebGPU project tutor |
+| [c/AGENTS.md](../c/AGENTS.md) | C side quest tutor |
+| [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Socratic rule for `rust-rag-learn/src/**` |
+| [.cursor/rules/rust-webgpu-tutor.mdc](../.cursor/rules/rust-webgpu-tutor.mdc) | Socratic rule for `rust-webgpu/**` |
+| [.cursor/rules/c-tutor.mdc](../.cursor/rules/c-tutor.mdc) | Socratic rule for `c/**` |
+| [rust-rag-learn/docs/RUST_WARMUP.md](../rust-rag-learn/docs/RUST_WARMUP.md) | RAG warm-up exercises |
+| [rust-rag-learn/docs/STEPS.md](../rust-rag-learn/docs/STEPS.md) | RAG walkthrough |
+| [rust-rag-learn/docs/WEEKLY_ROUTINE.md](../rust-rag-learn/docs/WEEKLY_ROUTINE.md) | Weekly schedule |
 
 ---
 
@@ -172,9 +176,9 @@ that teach the concept — I'll retype it myself.
 
 ## Prompts by project phase
 
-### Warm-up exercises (`src/rust_warmup.rs`)
+### Warm-up exercises (`rust-rag-learn/src/rust_warmup.rs`)
 
-Recommended order: **1 → 2 → 8 → 9 → 3 → 4 → 7 → 5 → 6** (see [RUST_WARMUP.md](RUST_WARMUP.md)).
+Recommended order: **1 → 2 → 8 → 9 → 3 → 4 → 7 → 5 → 6** (see [RUST_WARMUP.md](../rust-rag-learn/docs/RUST_WARMUP.md)).
 
 **Exercise 9 example (before looking at solutions):**
 
@@ -203,7 +207,7 @@ Before I do: what's one edge case the tests check that I might have missed?
 ```
 All rust_warmup tests pass. I'm moving to chunk.rs Step 1.
 
-Read docs/STEPS.md Step 1 requirements.
+Read rust-rag-learn/docs/STEPS.md Step 1 requirements.
 Break chunk_text into 4 substeps I can do in separate 15-min sessions.
 Don't write chunk.rs — just the substeps and which warm-up exercise each maps to.
 ```
@@ -298,11 +302,12 @@ No shame — switch back to Level 1–2 prompts for a session or two.
 ## Quick reference — verify commands
 
 ```bash
-cargo test rust_warmup          # all 9 warm-up exercises
-cargo test exercise_9           # single exercise
-cargo test chunk                # Step 1
-cargo test                      # full suite
-cargo run -- ingest             # CLI smoke test
+cargo test -p rust-rag-learn rust_warmup   # all 9 warm-up exercises
+cargo test -p rust-rag-learn exercise_9    # single exercise
+cargo test -p rust-rag-learn chunk         # Step 1
+cargo test -p rust-rag-learn               # full RAG crate
+cargo run -p rust-rag-learn -- ingest      # CLI smoke test
+make -C c test EX=01                       # C side quest
 ```
 
-When all warm-up tests pass, tackle Step 1 in [STEPS.md](STEPS.md) with confidence.
+When all warm-up tests pass, tackle Step 1 in [rust-rag-learn/docs/STEPS.md](../rust-rag-learn/docs/STEPS.md).

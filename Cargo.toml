@@ -1,10 +1,3 @@
-[package]
-name = "rust-rag-learn"
-version = "0.1.0"
-edition = "2021"
-description = "Step-by-step tutorial: vector databases and RAG in Rust"
-readme = "README.md"
-
-[dependencies]
-anyhow = "1"
-thiserror = "2"
+[workspace]
+members = ["rust-rag-learn", "rust-webgpu"]
+resolver = "2"

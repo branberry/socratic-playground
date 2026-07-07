@@ -4,8 +4,8 @@ This repository treats the **Socratic method** as the default way AI (and humans
 you learn. The goal is not to withhold help — it is to **lead you to your own insight**
 through questions, not lectures.
 
-**Who follows this:** Cursor (`AGENTS.md`, `.cursor/rules/`), external ChatGPT/Claude/Gemini
-(copy-paste prompt in `AGENTS.md`), and anyone tutoring you on Rust RAG or the C side quest.
+**Who follows this:** Cursor (`AGENTS.md`, `.cursor/rules/`), external ChatGPT/Claude/Gemini,
+and anyone tutoring you on any track in this monorepo (`rust-rag-learn/`, `rust-webgpu/`, `c/`).
 
 ---
 
@@ -141,8 +141,11 @@ Minimal solution with comments on teaching lines only.
 
 | File | Role |
 |------|------|
-| [AGENTS.md](../AGENTS.md) | Rust RAG tutor — embeds this contract |
-| [c/AGENTS.md](../c/AGENTS.md) | C side quest tutor — same contract |
+| [AGENTS.md](../AGENTS.md) | Monorepo tutor map |
+| [rust-rag-learn/AGENTS.md](../rust-rag-learn/AGENTS.md) | RAG project tutor |
+| [rust-webgpu/AGENTS.md](../rust-webgpu/AGENTS.md) | WebGPU project tutor |
+| [c/AGENTS.md](../c/AGENTS.md) | C side quest tutor |
 | [AI_LEARNING_WORKFLOW.md](AI_LEARNING_WORKFLOW.md) | Session rituals + stuck ladder |
-| [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Cursor rule for `src/**/*.rs` |
+| [.cursor/rules/rust-tutor.mdc](../.cursor/rules/rust-tutor.mdc) | Cursor rule for `rust-rag-learn/src/**` |
+| [.cursor/rules/rust-webgpu-tutor.mdc](../.cursor/rules/rust-webgpu-tutor.mdc) | Cursor rule for `rust-webgpu/**` |
 | [.cursor/rules/c-tutor.mdc](../.cursor/rules/c-tutor.mdc) | Cursor rule for `c/**` |

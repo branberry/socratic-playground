@@ -11,8 +11,9 @@ fn main() -> Result<()> {
 
 fn parse_data_dir() -> Result<PathBuf> {
     let mut args = env::args().skip(1);
+    let default = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("data/sample_docs");
     match args.next().as_deref() {
-        None | Some("ingest") => Ok(PathBuf::from("data/sample_docs")),
+        None | Some("ingest") => Ok(default),
         Some("--data-dir") => args
             .next()
             .map(PathBuf::from)
