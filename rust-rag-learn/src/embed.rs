@@ -11,7 +11,7 @@ pub fn normalize(vector: &mut Vec<f32>) {
     }
 }
 
-pub fn cosine_similarity() {}
+pub fn cosine_similarity(vec_a: Vec<f32>, vec_b: Vec<f32>) {}
 
 pub struct MockEmbedder {
     dimension: usize,
