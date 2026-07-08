@@ -11,7 +11,10 @@ pub fn normalize(vector: &mut Vec<f32>) {
     }
 }
 
-pub fn cosine_similarity(vec_a: Vec<f32>, vec_b: Vec<f32>) {}
+pub fn cosine_similarity(vec_a: Vec<f32>, vec_b: Vec<f32>) {
+    let numerator = vec_a.iter().zip(vec_b).map(|(a, b)| a * b).sum::<f32>();
+    let l2_norm_a = vec_a.iter().map(|x| x * x).sum::<f32>().sqrt();
+}
 
 pub struct MockEmbedder {
     dimension: usize,
