@@ -119,4 +119,60 @@ mod tests {
         normalize(&mut v);
         assert!(v.iter().sum::<f32>() == 0.0);
     }
+
+    #[test]
+    fn cosine_similarity_identical_vectors_is_one() {
+        let v = vec![1.0, 2.0, 3.0];
+        let score = cosine_similarity(v.clone(), v);
+        assert!((score - 1.0).abs() < 1e-5, "expected 1.0, got {score}");
+    }
+
+    #[test]
+    fn cosine_similarity_orthogonal_vectors_is_zero() {
+        let a = vec![1.0, 0.0];
+        let b = vec![0.0, 1.0];
+        let score = cosine_similarity(a, b);
+        assert!(score.abs() < 1e-5, "expected 0.0, got {score}");
+    }
+
+    #[test]
+    fn cosine_similarity_opposite_vectors_is_negative_one() {
+        let a = vec![1.0, 0.0];
+        let b = vec![-1.0, 0.0];
+        let score = cosine_similarity(a, b);
+        assert!((score + 1.0).abs() < 1e-5, "expected -1.0, got {score}");
+    }
+
+    #[test]
+    fn cosine_similarity_same_direction_different_magnitude_is_one() {
+        let a = vec![3.0, 4.0];
+        let b = vec![6.0, 8.0];
+        let score = cosine_similarity(a, b);
+        assert!((score - 1.0).abs() < 1e-5, "expected 1.0, got {score}");
+    }
+
+    #[test]
+    fn cosine_similarity_normalized_vectors_is_dot_product() {
+        let mut a = vec![3.0, 4.0];
+        let mut b = vec![5.0, 12.0];
+        normalize(&mut a);
+        normalize(&mut b);
+        let score = cosine_similarity(a.clone(), b.clone());
+        let dot: f32 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
+        assert!((score - dot).abs() < 1e-5);
+    }
+
+    #[test]
+    fn similar_texts_score_higher_than_unrelated() {
+        let embedder = MockEmbedder::new(32);
+        let cat = embedder.embed("the cat sat on the mat");
+        let dog = embedder.embed("the dog sat on the log");
+        let unrelated = embedder.embed("quantum physics equations");
+        let similar_score = cosine_similarity(cat.clone(), dog);
+        let unrelated_score = cosine_similarity(cat, unrelated);
+        assert!(
+            similar_score > unrelated_score,
+            "expected similar ({similar_score}) > unrelated ({unrelated_score})"
+        );
+    }
 }
