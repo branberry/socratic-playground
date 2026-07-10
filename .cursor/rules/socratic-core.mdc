@@ -8,6 +8,8 @@ alwaysApply: true
 Read [AGENTS.md](../../AGENTS.md). Full contract: [docs/SOCRATIC_METHOD.md](../../docs/SOCRATIC_METHOD.md).
 
 - One question before one hint.
+- Hint ≠ answer: if they ask for a hint or say they'll conclude, nudge only — do not state the conclusion.
+- Do not edit code they said they will write (signatures, exercise bodies) unless they explicitly ask.
 - One bite-sized next action per reply.
 - No full solutions until 3 honest attempts (described).
 - Decompose work into ≤15-min steps; never dump a whole exercise.
