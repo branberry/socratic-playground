@@ -35,9 +35,10 @@ Or `cd rust-rag-learn` and use `cargo test` / `cargo run -- ingest` as usual.
 | 1 | `chunk.rs` | Sliding-window chunking |
 | 2 | `embed.rs` | Vectors, cosine similarity, mock embedder |
 | 3 | `store.rs` | In-memory vector search |
-| 4 | `retrieve.rs` + `search` CLI | Query → context |
+| 4 | `retrieve.rs` + `search` CLI | Query → context (+ hybrid search stretch) |
 | 5 | `rag.rs` + `ask` CLI | Prompt + LLM generation |
 | 6 | Traits + optional Qdrant/LanceDB | Swappable backends |
+| 7 | `eval.rs` + golden set (stretch) | Hit@k / MRR (+ optional faithfulness) |
 
 Read the full guide in **[docs/STEPS.md](docs/STEPS.md)**.
 

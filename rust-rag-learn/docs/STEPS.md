@@ -146,6 +146,25 @@ cargo run -- search "ownership and borrowing"
 
 You'll need to extend `main.rs` to load docs, build the store, and run a query. Re-read how the old `search` subcommand worked if you saved it — or design your own.
 
+**Stretch — Hybrid search:** Dense (embedding) search alone misses exact terms (`pgvector`, error codes, proper nouns). Production RAG often combines:
+
+1. **Dense** — cosine / IP over embeddings (what you already have)
+2. **Sparse / keyword** — BM25 (or a simple TF–IDF / term-overlap scorer) over chunk text
+3. **Fusion** — merge ranked lists with **Reciprocal Rank Fusion (RRF)** (or a weighted sum of normalized scores)
+
+Build (optional module or methods on the store/retriever):
+- `keyword_search(query: &str, top_k) -> Vec<ScoredDocument>`
+- `hybrid_search(query, query_vector, top_k)` — run both, fuse, return top-k
+- Unit test: a query with a rare exact token ranks higher under hybrid than under dense-only
+
+**Discussion:** When would BM25 beat embeddings? When would embeddings beat BM25?
+
+**Verify (stretch):**
+```bash
+cargo test hybrid
+cargo run -- search "ownership and borrowing"   # compare dense vs hybrid if you add a flag
+```
+
 ---
 
 ## Step 5 — RAG (create `src/rag.rs`)
@@ -203,6 +222,37 @@ cargo run -- ask "What is a vector database?"
 
 ---
 
+## Step 7 — Evaluation harness (stretch)
+
+**Concept:** You cannot improve what you do not measure. Production RAG teams keep a **golden set** of questions with expected sources (and optionally expected answers), then score retrieval and generation on every pipeline change.
+
+**Your task:** Create `src/eval.rs` (or `tests/eval_*.rs`) and a small dataset under `data/eval/`.
+
+Build:
+1. **Golden set** — JSON/JSONL with at least ~10–20 items, e.g. `{ "question", "expected_source_ids": [...], "notes"? }`
+2. **Retrieval metrics** — for each question, run search and compute:
+   - **Hit@k** — did any expected source appear in top-k?
+   - **MRR** (mean reciprocal rank) — how high was the first relevant hit?
+3. **Generation metrics** (after Step 5 works) — pick one path:
+   - **Deterministic:** assert answer contains a required substring / citation id
+   - **LLM-as-judge (optional):** faithfulness / relevance rubric (calibrate against your own labels)
+4. **CLI or test target** — `cargo test eval` or `cargo run -- eval` prints a summary table
+
+**Hint (only if stuck):** Start with Hit@5 only. Add faithfulness later. Keep the golden set in git so regressions are visible in CI.
+
+**Discussion:** Why gate on regression vs main rather than a hard “90%” threshold? What failure modes does Hit@k miss?
+
+**Verify:**
+```bash
+cargo test eval
+# or
+cargo run -- eval
+```
+
+**Stretch further:** Wire failing prod/manual queries back into `data/eval/` (eval feedback loop). Optional: try [Ragas](https://github.com/explodinggradients/ragas)-style faithfulness/context-precision ideas in Rust or via a small Python sidecar.
+
+---
+
 ## Tutor mode
 
 When you ask for help, expect:
@@ -223,6 +273,8 @@ You implement; the tutor guides. Disagreements welcome.
 | Chunk count still 1 per file | Step 1 not done yet — check `chunk_text` |
 | All search scores similar | Mock embedder may need word-overlap logic (Step 2) |
 | LLM ignores context | Tighten prompt; retrieve more chunks; lower temperature |
+| Exact term never ranks | Try hybrid search stretch (Step 4) — dense-only can miss rare tokens |
+| “It feels better” but no numbers | Add Step 7 golden set + Hit@k before tuning more |
 
 ---
 
@@ -233,3 +285,9 @@ You implement; the tutor guides. Disagreements welcome.
 - **Cosine similarity** — Angle between vectors (−1 to 1; 1 = identical direction)
 - **HNSW** — Hierarchical graph index for fast approximate search
 - **RAG** — Retrieve docs at query time, inject into LLM prompt
+- **BM25** — Classic keyword ranking; strong on exact terms
+- **Hybrid search** — Combine dense (vector) and sparse (keyword) retrieval
+- **RRF** — Reciprocal Rank Fusion; merges ranked lists without score calibration
+- **Hit@k** — Fraction of queries with a relevant doc in the top-k
+- **MRR** — Mean reciprocal rank of the first relevant hit
+- **Faithfulness** — Whether the answer is supported by retrieved context
