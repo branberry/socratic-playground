@@ -1,0 +1,2 @@
+struct Document {}
+struct ScoredDocument {}
