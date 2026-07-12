@@ -10,5 +10,5 @@ pub struct ScoredDocument {
 }
 
 pub struct InMemoryVectorStore {
-    pub store: Vec<Document>,
+    pub documents: Vec<Document>,
 }

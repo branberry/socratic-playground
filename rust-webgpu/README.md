@@ -1,14 +1,14 @@
 # rust-webgpu
 
-Build an interactive **GPU playground** in Rust — from your first WebGPU triangle to a compute-driven particle field you orbit with the mouse.
+Build a **minimal 3D game engine** in Rust + WebGPU — from your first triangle to a playable **3D Breakout** on *your* loop, input, camera, meshes, and collision.
 
-Same monorepo principles as [rust-rag-learn](../rust-rag-learn/): Socratic tutoring, small steps, **you write the code**.
+Same monorepo principles as [rust-rag-learn](../rust-rag-learn/): Socratic tutoring, small steps, **you write the code**, explain-back for deep understanding.
 
 ## Vision
 
-> Orbit camera + thousands of instanced particles, positions updated each frame by a **compute shader**. Document the journey so another Rust learner can follow.
+> App loop, fixed timestep, perspective camera, box meshes, AABB — enough to ship 3D Breakout and document *why* each subsystem exists.
 
-Full north star: [docs/VISION.md](docs/VISION.md)
+Full north star + cognition principles: [docs/VISION.md](docs/VISION.md)
 
 ## Start here
 
@@ -20,16 +20,16 @@ Full north star: [docs/VISION.md](docs/VISION.md)
 3. Answer: *Why does WebGPU have separate `Device`, `Queue`, and `Surface`?*
 4. Begin [docs/WEBGPU_WARMUP.md](docs/WEBGPU_WARMUP.md) Phase 0 before adding `wgpu`
 
-Track progress in [docs/PROGRESS.md](docs/PROGRESS.md).
+Track progress in [docs/PROGRESS.md](docs/PROGRESS.md). ~3-month target: playable Breakout ([docs/ROADMAP.md](docs/ROADMAP.md)).
 
 ## Learning path
 
 | Doc | Purpose |
 |-----|---------|
-| [docs/VISION.md](docs/VISION.md) | North star + capstone demo |
-| [docs/WEBGPU_WARMUP.md](docs/WEBGPU_WARMUP.md) | Rust/math exercises before the GPU |
+| [docs/VISION.md](docs/VISION.md) | North star, engine scope, cognition rules |
+| [docs/WEBGPU_WARMUP.md](docs/WEBGPU_WARMUP.md) | Math/layout/AABB exercises before the GPU window |
 | [docs/STEPS.md](docs/STEPS.md) | Steps 0–7 — implementation guide |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | Phases, pace, blog hooks, session template |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Phases, pace, quizzes, blog hooks |
 | [docs/PROGRESS.md](docs/PROGRESS.md) | Your checklist + session log |
 
 ## Quick verify

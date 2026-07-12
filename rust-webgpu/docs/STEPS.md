@@ -6,11 +6,13 @@ After each step, run the verify commands listed below.
 
 **Vision:** [VISION.md](VISION.md) · **Warm-up first:** [WEBGPU_WARMUP.md](WEBGPU_WARMUP.md) · **Track progress:** [PROGRESS.md](PROGRESS.md)
 
+**Cognition pattern (every step):** Concept → (paper-before-code from Step 3+) → substeps → Discussion → Verify → Explain-back.
+
 ---
 
 ## Step 0 — Read the problem (no new code)
 
-**Concept:** WebGPU is a low-level GPU API. The CPU records commands into queues; the GPU executes them asynchronously. Before writing code, understand the three roles you'll wire up first: **Device** (creates resources), **Queue** (submits work), **Surface** (presents to the window).
+**Concept:** WebGPU is a low-level GPU API. The CPU records commands into queues; the GPU executes them asynchronously. Before writing code, understand the three roles you'll wire up first: **Device** (creates resources), **Queue** (submits work), **Surface** (presents to the window). Your long-term goal is a **minimal 3D engine** that ships Breakout — not a particle demo.
 
 **Your task:**
 1. Read [VISION.md](VISION.md) — know what you're building toward
@@ -21,7 +23,7 @@ After each step, run the verify commands listed below.
    ```
 4. In your own words: *Why does WebGPU have separate `Device`, `Queue`, and `Surface`?*
 
-**Discussion:** If you merged them into one object, what would break when you resize the window or submit compute work?
+**Discussion:** If you merged them into one object, what would break when you resize the window or separate “update world” from “draw frame”?
 
 **Verify:**
 ```bash
@@ -30,13 +32,15 @@ cargo run -p rust-webgpu
 
 You should see the scaffold message. No GPU yet.
 
+**Explain-back:** One sentence — what problem does a Surface solve that Device alone does not?
+
 **Next:** Complete [WEBGPU_WARMUP.md](WEBGPU_WARMUP.md) Phase 0 before Step 1.
 
 ---
 
 ## Step 1 — Window + clear color
 
-**Concept:** Every wgpu app needs an event loop (`winit`), async initialization (`pollster`), and a configured surface. The simplest frame clears the screen to a solid color.
+**Concept:** Every wgpu app needs an event loop (`winit`), async initialization (`pollster`), and a configured surface. The simplest frame clears the screen to a solid color. This is the bottom of your engine’s render path.
 
 **Dependencies to add:**
 ```toml
@@ -49,7 +53,7 @@ pollster = "0.4"
 
 ### Substep 1a — Event loop
 
-Create a `winit` window (800×600 or similar). Handle `Event::AboutToWait` to request redraws. Exit on close.
+Create a `winit` window (800×600 or similar). Handle redraw requests. Exit on close.
 
 **Verify:** Window opens and closes cleanly.
 
@@ -86,75 +90,37 @@ cargo run -p rust-webgpu
 
 Solid color fills the window. Resize works.
 
----
-
-## Step 2 — Triangle (first render pipeline)
-
-**Concept:** Drawing requires a **shader module** (WGSL), a **render pipeline** (fixed-function state + shader stages), and a **draw call**. Start with 3 hard-coded vertices in the vertex shader — no buffers yet.
-
-**Your task:** Create `shader.wgsl` and `pipeline.rs` (or inline in `gpu.rs` at first).
-
-### Substep 2a — WGSL shaders
-
-Write a vertex shader that outputs clip-space positions for 3 corners of a triangle. Write a fragment shader that outputs a solid color (or per-vertex interpolated color if you pass it through).
-
-**Verify:** Shader compiles when you create `ShaderModule`.
-
-### Substep 2b — Render pipeline
-
-Create `RenderPipeline` with:
-- `vertex` + `fragment` entry points
-- `PrimitiveTopology::TriangleList`
-- Color target matching your surface format
-
-**Verify:** Pipeline creation succeeds.
-
-### Substep 2c — Draw call
-
-In your render pass: `set_pipeline`, `draw(0..3, 0..1)`.
-
-**Discussion:** Why is the triangle the "hello world" of GPU programming?
-
-**Verify:**
-```bash
-cargo run -p rust-webgpu
-```
-
-**Demo checkpoint:** Triangle visible on screen — the universal WebGPU milestone.
-
-Optional: `cargo test -p rust-webgpu pipeline` if you add compile-only unit tests.
+**Explain-back (3–5 sentences from memory):** What are Device, Queue, and Surface each responsible for?
 
 ---
 
-## Step 3 — Buffers + colored geometry
+## Step 2 — Triangle → colored cube mesh
 
-**Concept:** Real geometry lives in **GPU buffers**. Vertex attributes describe layout; index buffers reuse vertices for shared corners.
+**Concept:** Drawing requires a **shader module** (WGSL), a **render pipeline**, and a **draw call**. Start with a hard-coded triangle, then move geometry into GPU buffers as a colored **cube** — the building block for Breakout boxes.
 
-**Dependencies to add:**
+**Dependencies** (if not already from warm-up):
 ```toml
 bytemuck = { version = "1", features = ["derive"] }
 glam = "0.29"
 ```
 
-**Your task:** Create `mesh.rs` with vertex struct + buffer upload.
+**Your task:** Create `shader.wgsl`, `pipeline.rs`, and start `mesh.rs`.
 
-### Substep 3a — Vertex struct
+### Substep 2a — WGSL triangle
 
-Define `#[repr(C)]` vertex with position + color (reuse warm-up `GpuVertex` pattern). Derive `bytemuck::Pod` + `Zeroable`.
+Write a vertex shader that outputs clip-space positions for 3 corners. Fragment shader: solid or interpolated color.
 
-**Verify:** `cargo test -p rust-webgpu exercise_3` still passes (warm-up).
+**Verify:** Shader compiles when you create `ShaderModule`.
 
-### Substep 3b — Vertex + index buffers
+### Substep 2b — Render pipeline + draw
 
-Upload a cube (or quad) via `queue.write_buffer`. Create index buffer for two triangles (quad) or 12 triangles (cube).
+Create `RenderPipeline`; `draw(0..3, 0..1)`.
 
-**Verify:** Buffers created with `BufferUsages::VERTEX | COPY_DST` (and `INDEX` for index buffer).
+**Verify:** Triangle on screen.
 
-### Substep 3c — Pipeline vertex layout
+### Substep 2c — Cube mesh buffers
 
-Update render pipeline with `vertex_buffers` layout matching your struct fields (location 0 = position, location 1 = color).
-
-**Verify:** `set_vertex_buffer`, `set_index_buffer`, `draw_indexed`.
+Define `#[repr(C)]` vertex (position + color). Upload cube vertices + indices. Update pipeline vertex layout. `draw_indexed`.
 
 **Discussion:** Why `BufferUsages::VERTEX | COPY_DST` instead of `VERTEX` alone?
 
@@ -163,141 +129,186 @@ Update render pipeline with `vertex_buffers` layout matching your struct fields 
 cargo run -p rust-webgpu
 ```
 
-Colored cube (or quad) on screen.
+**Demo checkpoint:** Colored cube on screen (may still be orthographic / no depth yet).
+
+**Explain-back:** In one sentence, what does the render pipeline “lock in” that a draw call does not?
 
 ---
 
-## Step 4 — Uniforms + orbit camera
+## Step 3 — Depth + perspective camera (static)
 
-**Concept:** The view-projection matrix changes every frame but the pipeline stays the same. **Uniform buffers** + **bind groups** upload per-frame data to shaders.
+**Concept:** Real 3D needs a **depth buffer** and a **perspective projection**. Model–view–projection (MVP) uniforms place the cube in a 3D world. Camera can be static for this step.
 
-**Your task:** Create `camera.rs`. Reuse warm-up exercise 5 for eye position.
+**Paper-before-code:** Sketch (ASCII or paper): eye → look-at → view matrix → projection → clip space. Label where the uniform buffer sits.
 
-### Substep 4a — Uniform struct
+**Your task:** Extend `mesh.rs` / `pipeline.rs`; create early `camera.rs` for static MVP.
 
-Define `#[repr(C)]` struct with `view_proj: [[f32; 4]; 4]` (or `[f32; 16]`). Match WGSL `struct Uniforms { view_proj: mat4x4<f32> }`.
+### Substep 3a — Depth texture + depth state
 
-**Verify:** Size is multiple of 16 bytes (WGSL uniform alignment).
+Create a depth texture matching the surface size. Enable depth test/write in the pipeline. Recreate depth on resize.
 
-### Substep 4b — Bind group layout + bind group
+**Verify:** Overlapping geometry sorts correctly (no random z-fighting).
 
-Create bind group layout (uniform buffer, vertex + fragment visibility). Allocate uniform buffer. Create bind group.
+### Substep 3b — Uniform MVP
 
-**Verify:** Pipeline layout includes bind group layout 0.
+`#[repr(C)]` uniform with `view_proj` (and optional `model`). Bind group layout + bind group. WGSL uses `mat4x4<f32>`.
 
-### Substep 4c — Update camera from input
+**Verify:** Uniform size is a multiple of 16 bytes.
 
-Mouse drag → yaw/pitch. Scroll → radius. Compute view × projection each frame, write to uniform buffer before draw.
+### Substep 3c — Static perspective view
 
-**Verify:** Orbit feels smooth; no gimbal flip (clamp pitch).
+Place the camera at a fixed eye looking at the origin (or playfield center). Draw the cube in perspective.
 
-**Discussion:** Why a bind group instead of pushing constants every draw?
+**Discussion:** What goes wrong if near/far planes are chosen poorly?
 
 **Verify:**
 ```bash
 cargo run -p rust-webgpu
 ```
 
-Cube stays centered; you orbit around it with mouse.
+Cube sits in 3D space; depth looks correct.
+
+**Explain-back (3–5 sentences):** What is MVP, and why is depth testing separate from the projection matrix?
 
 ---
 
-## Step 5 — Instanced particles (render only)
+## Step 4 — Game loop + input + fixed timestep
 
-**Concept:** **Instancing** draws the same mesh many times with different per-instance data. Start with static random positions (CPU seed once) before compute animation.
+**Concept:** An engine **owns the frame**: sample input, advance simulation on a **fixed timestep**, then render. Variable frame time alone makes physics jittery and hard to reason about.
 
-**Your task:** Create `particles.rs`.
+**Paper-before-code:** Sketch the frame loop: events → accumulate dt → while accumulator ≥ step { update(step) } → render(alpha?).
 
-### Substep 5a — Particle struct
+**Decision note (before coding):** Write 3–5 lines: why fixed timestep for Breakout instead of “just use last frame’s dt”? Save it in chat or [PROGRESS.md](PROGRESS.md).
 
-```rust
-#[repr(C)]
-struct Particle {
-    position: [f32; 3],
-    velocity: [f32; 3],
-    // pad to 16-byte alignment if needed
-}
-```
+**Your task:** Create `time.rs`, `input.rs`, and structure `app.rs` (or expand `main.rs`).
 
-Seed ~1000–10000 particles with random positions in a sphere or box.
+### Substep 4a — Input state
 
-**Verify:** Buffer uploads without validation errors.
+Track keys pressed this frame (WASD / arrows). Clear or edge-detect as you prefer — document the choice.
 
-### Substep 5b — Instance buffer + instanced draw
+**Verify:** Print or log key presses once (temporary).
 
-Use `draw_indexed(0..index_count, 0..instance_count)` or equivalent instanced API. Pass instance index to vertex shader via `@builtin(instance_index)` or instance vertex buffer.
+### Substep 4b — Fixed timestep accumulator
 
-**Verify:** Static particle field visible.
+`Instant` for real dt; accumulate; run `update(FIXED_DT)` zero or more times per frame.
 
-### Substep 5c — Billboard or point sprites
+**Verify:** Update count stays stable when you drag the window (within reason).
 
-Expand quad per particle in vertex shader (billboard facing camera) or use small quads. Keep fragment shader simple (color by velocity magnitude or random hue).
+### Substep 4c — Move a cube with WASD
 
-**Demo checkpoint:** Field of particles you can fly through with orbit camera.
+Apply input in `update` to a world position; rebuild model matrix; render.
+
+**Discussion:** Who “owns” time in your architecture — the event loop, `time.rs`, or the game?
 
 **Verify:**
 ```bash
 cargo run -p rust-webgpu
 ```
 
-Thousands of points visible; camera moves through them.
+You can move a cube with the keyboard at a stable rate.
+
+**Explain-back (3–5 sentences from memory):** What problem does a fixed timestep solve that variable dt does not?
 
 ---
 
-## Step 6 — Compute shader (capstone logic)
+## Step 5 — Camera as a game system
 
-**Concept:** **Compute shaders** run general parallel work on the GPU. A separate pipeline updates particle state; the render pipeline reads the result.
+**Concept:** The camera is not just math — it is a **system** that produces view (and projection) each frame for the playfield. For Breakout, a fixed chase / elevated view aimed at the board is enough; orbit control is optional polish.
 
-**Your task:** Extend `shader.wgsl` with a compute entry point.
+**Paper-before-code:** Sketch playfield axes (where is the paddle? bricks? camera?). Mark eye and target.
 
-### Substep 6a — Compute pipeline
+**Your task:** Flesh out `camera.rs` — reuse warm-up exercise 5 if you use orbit; or a fixed elevated eye looking at board center.
 
-Add `@compute fn main(@builtin(global_invocation_id) id: vec3<u32>)`. One thread per particle. Create `ComputePipeline` + bind group for particle storage buffer.
+### Substep 5a — Playfield-oriented view
 
-**Verify:** Pipeline compiles; dispatch `(particle_count + 63) / 64` workgroups.
+Define board bounds in world space. Camera looks at board center from a comfortable angle.
 
-### Substep 6b — Simulation logic
+**Verify:** Full playfield visible; cube/paddle prototype not clipped oddly.
 
-Simple rules: velocity += gravity or attraction to origin; position += velocity * delta_time; damp velocity. Use `delta_time` from frame timing.
+### Substep 5b — Aspect ratio on resize
 
-**Verify:** Particles move smoothly without exploding (tune constants).
+Update projection when the window resizes.
 
-### Substep 6c — Mouse interaction
+**Verify:** Resize — no permanent stretch.
 
-On click, write mouse world position (or screen ray) into a small uniform. Compute shader applies repulsion or attraction within a radius.
+### Substep 5c — Optional orbit polish
 
-**Discussion:** Render vs compute pipeline — when does each run in your frame loop?
+Mouse drag adjusts yaw/pitch around the board (clamp pitch). Do not block Breakout progress on this.
+
+**Discussion:** Should gameplay input and camera input share one `InputState` or stay separate?
 
 **Verify:**
 ```bash
 cargo run -p rust-webgpu
 ```
 
-**Demo checkpoint:** Particles swirl and respond to mouse clicks.
+Comfortable view of a 3D playfield.
+
+**Explain-back:** One sentence — what does the camera system *output* that the renderer consumes?
 
 ---
 
-## Step 7 — Polish + share
+## Step 6 — World + AABB collision
 
-**Concept:** Production-ish demos handle edge cases: depth testing, frame timing, resize reconfigure, and honest documentation.
+**Concept:** Breakout needs entities (paddle, ball, bricks) and **AABB tests**. Prefer a simple `World` with structs/`Vec`s for Year 1 — full ECS is a later stretch.
 
-**Your task:** Harden the app and prepare to share.
+**Paper-before-code:** List entity fields (position, size, velocity if any). Draw paddle/ball/brick AABBs.
 
-### Substep 7a — Depth buffer
+**Decision note:** One paragraph — why `Vec`/structs for Breakout instead of an ECS crate right now?
 
-Add depth texture + `DepthStencilState`. Particles/cube render correctly when overlapping.
+**Your task:** Create `world.rs` and `collision.rs`. Reuse warm-up exercise 6.
 
-**Verify:** No z-fighting when geometry overlaps.
+### Substep 6a — Entity types + AABBs
 
-### Substep 7b — Delta time + resize
+Paddle, ball, bricks with positions/sizes. Helper: entity → `Aabb`.
 
-Use `Instant` for frame delta. On resize: update surface config, recreate depth texture if needed.
+**Verify:** Unit tests for `aabb_intersects` still pass; add a couple world-level tests if useful.
 
-**Verify:** Resize during simulation — no crash, no stretch artifacts.
+### Substep 6b — Ball motion + wall bounce
 
-### Substep 7c — Repo polish
+Update ball in fixed timestep; reverse velocity on playfield bounds.
 
-Update README with architecture diagram. List limitations (no PBR, no asset loading, platform quirks). Optional: record a short demo GIF.
+**Verify:** Ball stays in the board.
+
+### Substep 6c — Paddle and brick hits
+
+Paddle follows input; on ball–paddle / ball–brick overlap, bounce and deactivate brick.
+
+**Discussion:** On overlap, do you resolve by flipping velocity, pushing out of penetration, or both?
+
+**Verify:**
+```bash
+cargo run -p rust-webgpu
+cargo test -p rust-webgpu
+```
+
+Paddle hits ball; bricks disappear on hit.
+
+**Explain-back (3–5 sentences):** How does AABB overlap decide a “hit,” and what does your game do in the same frame after a hit?
+
+---
+
+## Step 7 — Ship 3D Breakout + polish
+
+**Concept:** A game is rules + feedback: lives or fail on miss, win when bricks clear, readable colors, resize-safe present. Then document what you built.
+
+**Your task:** Create `game.rs` or `breakout.rs`; harden and write up.
+
+### Substep 7a — Rules + win/lose
+
+Miss ball → lose life or reset; clear all bricks → win. Simple on-screen state is enough (title in window / clear-color change / println is fine for v1).
+
+**Verify:** You can win and lose deliberately.
+
+### Substep 7b — Render all entities as boxes
+
+One cube mesh, different model matrices/colors per entity (or small instance buffer if you already know how — not required).
+
+**Verify:** Playable round feels readable.
+
+### Substep 7c — Repo polish + architecture note
+
+Update README with architecture diagram. List limitations (no audio, no textures, no ECS). Optional: short screen recording.
 
 **Verify:**
 ```bash
@@ -305,9 +316,11 @@ cargo test -p rust-webgpu
 cargo run -p rust-webgpu
 ```
 
-All warm-up tests still pass. App runs on a clean clone with documented deps.
+**Demo checkpoint:** Playable 3D Breakout on your engine.
 
-**Capstone complete:** See [ROADMAP.md](ROADMAP.md) Phase 7 for blog checklist.
+**Explain-back (3–5 sentences from memory):** From events to pixels, who owns the frame in your engine?
+
+**Capstone complete:** See [ROADMAP.md](ROADMAP.md) Phase 7. Optional Phase 8 (particles/compute) is off the critical path.
 
 ---
 
@@ -317,7 +330,7 @@ All warm-up tests still pass. App runs on a clean clone with documented deps.
 |------|---------------------|
 | Phase 0 | `glam`, `bytemuck` |
 | 1 | `winit`, `wgpu`, `pollster` |
-| 3 | (already have `glam`, `bytemuck`) |
+| 2+ | (already have `glam`, `bytemuck`) |
 | 7 (optional) | `env_logger`, `log` |
 
 Add dependencies **when you reach that step** — not all at once.
@@ -330,10 +343,11 @@ Add dependencies **when you reach that step** — not all at once.
 |------|------------|
 | 0 | — (read only) |
 | 1 | `window.rs`, `gpu.rs`, wire in `main.rs` |
-| 2 | `shader.wgsl`, `pipeline.rs` |
-| 3 | `mesh.rs` |
-| 4 | `camera.rs` |
-| 5–6 | `particles.rs`, extend `shader.wgsl` |
-| 7 | polish across existing modules |
+| 2 | `shader.wgsl`, `pipeline.rs`, start `mesh.rs` |
+| 3 | depth path; early `camera.rs` (static MVP) |
+| 4 | `time.rs`, `input.rs`, `app.rs` structure |
+| 5 | flesh out `camera.rs` |
+| 6 | `world.rs`, `collision.rs` |
+| 7 | `game.rs` / `breakout.rs` + polish |
 
 The tutor may scaffold **empty files** from this list — you implement the logic.

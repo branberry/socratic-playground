@@ -1,6 +1,6 @@
 # Progress tracker
 
-Update this file at the **end of every session** — especially the "Next 5-min task" line. Future-you re-enters here.
+Update this file at the **end of every session** — especially the “Next 5-min task” line. Future-you re-enters here.
 
 **Roadmap:** [ROADMAP.md](ROADMAP.md) · **Implementation:** [STEPS.md](STEPS.md) · **Vision:** [VISION.md](VISION.md)
 
@@ -8,7 +8,7 @@ Update this file at the **end of every session** — especially the "Next 5-min 
 
 ## Long-term goal
 
-Build a from-scratch Rust WebGPU playground (orbit camera + compute-driven particles), **documented enough that I can share my knowledge and experience with others** — blog series + polished GitHub repo.
+Build a from-scratch Rust + WebGPU **minimal 3D engine** and ship **3D Breakout**, documented enough to share knowledge and deepen expertise — blog series + polished GitHub repo.
 
 ---
 
@@ -34,66 +34,77 @@ Build a from-scratch Rust WebGPU playground (orbit camera + compute-driven parti
 - [ ] Exercise 4 — vertex bytes (after ex 3)
 - [ ] Exercise 3 — `#[repr(C)]` size/align
 - [ ] Exercise 5 — orbit eye position
-- [ ] Exercise 6 — AABB contains (optional stretch)
+- [ ] Exercise 6 — AABB contains + intersects (**required**)
 - [ ] `cargo test -p rust-webgpu webgpu_warmup` — all green
-- [ ] Can explain why GPU structs need `#[repr(C)]` (one sentence)
+- [ ] Explain-back: why GPU structs need `#[repr(C)]` (one sentence)
 
 ### Phase 1 — Window + clear
 
-- [ ] Step 0 complete (scaffold run, Device/Queue/Surface question answered)
+- [ ] Step 0 complete (scaffold run, Device/Queue/Surface answered)
 - [ ] Step 1a — event loop
 - [ ] Step 1b — async GPU init (`pollster`)
 - [ ] Step 1c — surface config + resize
 - [ ] Step 1d — clear color render pass
 - [ ] `cargo run -p rust-webgpu` — colored window, resize OK
-- [ ] Demo checkpoint captured (screenshot)
+- [ ] Explain-back: Device / Queue / Surface (3–5 sentences)
+- [ ] Demo checkpoint captured
 - [ ] Blog post 1 drafted or published
 
-### Phase 2 — Triangle
+### Phase 2 — Triangle → cube
 
-- [ ] Step 2 — WGSL + render pipeline + draw
-- [ ] Triangle visible on screen
+- [ ] Step 2 — WGSL + pipeline + cube mesh
+- [ ] Colored cube on screen
+- [ ] Explain-back: pipeline vs draw call
 - [ ] Demo checkpoint captured
 - [ ] Blog post 2 drafted or published
 
-### Phase 3 — Buffers + cube
+### Phase 3 — Depth + perspective
 
-- [ ] Step 3 — `mesh.rs`, vertex/index buffers
-- [ ] Colored cube (or quad) on screen
+- [ ] Paper sketch of MVP completed before coding
+- [ ] Step 3 — depth buffer + static perspective camera
+- [ ] Cube in true 3D space
+- [ ] Explain-back: MVP + depth (3–5 sentences)
 - [ ] Demo checkpoint captured
 - [ ] Blog post 3 drafted or published
 
-### Phase 4 — Camera + uniforms
+### Phase 4 — Game loop + input
 
-- [ ] Step 4 — `camera.rs`, bind groups, mouse orbit
-- [ ] Orbit camera works smoothly
-- [ ] Demo checkpoint captured (screen recording)
+- [ ] Decision note: fixed vs variable timestep
+- [ ] Step 4 — `time.rs`, `input.rs`, WASD-moving cube
+- [ ] Explain-back: what fixed timestep solves (3–5 sentences)
+- [ ] Demo checkpoint captured
 - [ ] Blog post 4 drafted or published
 
-### Phase 5 — Instanced particles
+### Phase 5 — Camera system
 
-- [ ] Step 5 — `particles.rs`, static field
-- [ ] Thousands of particles visible
+- [ ] Paper sketch of playfield + camera
+- [ ] Step 5 — playfield-oriented view + resize aspect
+- [ ] Explain-back: camera system output
 - [ ] Demo checkpoint captured
 - [ ] Blog post 5 drafted or published
 
-### Phase 6 — Compute simulation
+### Phase 6 — World + AABB
 
-- [ ] Step 6 — compute pipeline + dispatch
-- [ ] Particles animate each frame
-- [ ] Mouse click disturbs field
+- [ ] Decision note: `Vec` world vs ECS for Breakout
+- [ ] Step 6 — paddle / ball / bricks + collision
+- [ ] Bricks clear on hit; ball stays in bounds
+- [ ] Explain-back: hit detection + same-frame response
 - [ ] Demo checkpoint captured
 - [ ] Blog post 6 drafted or published
 
-### Phase 7 — Peer polish
+### Phase 7 — Ship Breakout + polish
 
-- [ ] Step 7 — depth buffer, delta time, resize hardening
-- [ ] README tells the full story + links to blog
-- [ ] Architecture diagram matches code
-- [ ] Limitations section written
-- [ ] Clean-clone verify commands documented and tested
-- [ ] Blog capstone (post 7) drafted or published
-- [ ] Optional: screen recording of particle demo
+- [ ] Step 7 — win/lose rules
+- [ ] Playable 3D Breakout round
+- [ ] Explain-back: who owns the frame (3–5 sentences)
+- [ ] README architecture + limitations
+- [ ] Clean-clone verify commands tested
+- [ ] Blog capstone drafted or published
+- [ ] Optional: screen recording
+
+### Phase 8 — Optional GPU deep dive
+
+- [ ] _(only after Phase 7)_ particles / compute — not required for Year 1
 
 ---
 
@@ -113,4 +124,4 @@ _Newest first. One line per session is enough._
 2. Pick one [tangential quiz from ROADMAP.md](ROADMAP.md#tangential-task--quiz-bank) for your phase
 3. Do the 5-min task, then decide if you have energy for more
 
-**Career reminder:** _Who benefits when this ships? Engineers learning WebGPU in Rust; peers evaluating GPU compute patterns; future you on real-time visualization._
+**Career / cognition reminder:** _Who benefits when this ships? Engineers learning real-time systems in Rust; peers who want grounded GPU+engine intuition; future you explaining the frame without hand-waving._
