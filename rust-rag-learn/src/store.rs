@@ -1,4 +1,4 @@
-use crate::{chunk::Chunk, embed::MockEmbedder};
+use crate::{chunk::Chunk, embed::Embedder};
 
 pub struct Document {
     pub chunk: Chunk,
@@ -14,5 +14,5 @@ pub struct InMemoryVectorStore {
 }
 
 impl InMemoryVectorStore {
-    pub fn from_chunks(embedder: MockEmbedder, chunks: &[f32]) {}
+    pub fn from_chunks<TEmbedder: Embedder>(embedder: &TEmbedder, chunks: &[f32]) {}
 }
