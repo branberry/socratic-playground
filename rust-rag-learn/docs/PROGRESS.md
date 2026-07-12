@@ -16,10 +16,10 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 
 | Field | Value |
 |-------|-------|
-| **Phase** | 0 — Warm-up (almost done) |
-| **Last updated** | _(set date when you edit)_ |
-| **Last session** | _(what you did)_ |
-| **Next 5-min task** | Implement `borrow_first_window` in `rust_warmup.rs`, run `cargo test exercise_9` |
+| **Phase** | 0 — Warm-up (almost done)
+| **Last updated** | _12/7/2026_
+| **Last session** | —
+| **Next 5-min task** | work on the inmemoryvectorstore from_chunks|
 
 ---
 
@@ -31,7 +31,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [x] Exercise 9 — `borrow_first_window`
 - [x] `cargo test rust_warmup` — all green
 - [x] Can explain why `Chunk` uses `String` not `&str` (one sentence)
-
 ### Phase 1 — Chunking
 
 - [x] Step 0 complete (ingest run, can explain why not one vector per book)
@@ -40,7 +39,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [x] `cargo run -- ingest` shows multiple chunks for long docs
 - [ ] Demo checkpoint captured (screenshot/log)
 - [ ] Blog post 1 drafted or published
-
 ### Phase 2 — Embeddings & store
 
 - [ ] Step 2 — `embed.rs`
@@ -48,7 +46,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [ ] `cargo test embed` and `cargo test store` green
 - [ ] Demo checkpoint (similarity ordering makes sense)
 - [ ] Blog post 2 drafted or published
-
 ### Phase 3 — Retrieval CLI
 
 - [ ] Step 4 — `retrieve.rs` + `search` command
@@ -56,7 +53,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [ ] `cargo run -- search "..."` returns ranked hits
 - [ ] Demo checkpoint captured
 - [ ] Blog post 3 drafted or published
-
 ### Phase 4 — RAG + Ollama
 
 - [ ] Step 5 — `rag.rs` + `ask` command
@@ -64,7 +60,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [ ] `cargo run -- ask "..."` returns grounded answer
 - [ ] Demo checkpoint captured (note one success or failure mode)
 - [ ] Blog post 4 drafted or published
-
 ### Phase 5 — Traits + Qdrant
 
 - [ ] Step 6 — traits extracted
@@ -72,7 +67,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [ ] Search works against Qdrant
 - [ ] Demo checkpoint (compare vs in-memory)
 - [ ] Blog post 5 drafted or published
-
 ### Phase 6 — Peer polish
 
 - [ ] README tells the full story + links to blog
@@ -81,7 +75,6 @@ Build a from-scratch Rust RAG CLI (through Qdrant), **documented enough that I c
 - [ ] Clean-clone verify commands documented and tested
 - [ ] Blog capstone (post 6) drafted or published
 - [ ] Optional: terminal demo recording
-
 ---
 
 ## Session log
@@ -90,6 +83,7 @@ _Newest first. One line per session is enough._
 
 | Date | Phase | Done | Next 5-min task |
 |------|-------|------|-----------------|
+| _12/7/2026_ | 0 — Warm-up (almost done) | — | work on the inmemoryvectorstore from_chunks |
 | _30/6/2026_ | 0 | Exercises 1–8 green | Finish ex 9: `borrow_first_window` |
 | _3/7/2026_| 1 | Execrise 9 complete and worked on substeps for first part of chunking| finish chunking |
 | _6/7/2026_| 1 | Finished chunking a few days ago. Spent some time working on the normalize function and that is working well. Also got the embed method up and running| work on cosine similiarity |

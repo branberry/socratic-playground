@@ -1,0 +1,20 @@
+{
+  "tracks": {
+    "monorepo": {
+      "track": "monorepo",
+      "phase": 3,
+      "last_session_at": "2026-07-12T02:43:52.933Z",
+      "last_done": "What passed / what you did? I've updated the `store.rs` to have the InMemoryVectorStore as outlined in the `STEPS.md`. Not significant, but a modest step. I'll probably continue to do a bit more, but I wanted to test the journal extension.",
+      "next_5min": "work on search(query_vector,top_k) next.",
+      "last_fuzzy": "How exactly the vector store will work ie how many vectors should it have?"
+    },
+    "rust-rag-learn": {
+      "track": "rust-rag-learn",
+      "phase": 0,
+      "last_session_at": "2026-07-12T19:14:03.497Z",
+      "last_done": "",
+      "next_5min": "work on the inmemoryvectorstore from_chunks",
+      "last_fuzzy": ""
+    }
+  }
+}

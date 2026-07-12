@@ -19,16 +19,20 @@ pub fn cosine_similarity(vec_a: &[f32], vec_b: &[f32]) -> f32 {
     numerator / (l2_norm_a * l2_norm_b)
 }
 
+pub trait Embedder {
+    fn new(dim: usize) -> Self;
+    fn embed(&self, text: &str) -> Vec<f32>;
+}
 pub struct MockEmbedder {
     dimension: usize,
 }
 
-impl MockEmbedder {
-    pub fn new(dim: usize) -> Self {
+impl Embedder for MockEmbedder {
+    fn new(dim: usize) -> Self {
         Self { dimension: dim }
     }
 
-    pub fn embed(&self, text: &str) -> Vec<f32> {
+    fn embed(&self, text: &str) -> Vec<f32> {
         let mut text_vector: Vec<f32> = vec![0.0; self.dimension];
 
         for word in text.split(" ") {

@@ -15,3 +15,4 @@ Read [AGENTS.md](../../AGENTS.md). Full contract: [docs/SOCRATIC_METHOD.md](../.
 - Decompose work into ≤15-min steps; never dump a whole exercise.
 - After green tests: ask why in one sentence.
 - Agent mode: run tests and scaffold only — not core exercise logic unless stuck ladder level 5.
+- Prefer toy examples for concepts — never use the learner’s exercise code as the worked example unless they explicitly ask.

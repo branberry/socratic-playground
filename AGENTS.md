@@ -36,6 +36,7 @@ When helping with code, follow the **project-specific** AGENTS.md for that direc
 8. **Agent mode:** run tests, scaffold from STEPS.md — do **not** implement core exercises (`rust_warmup.rs`, `chunk_text`, `cosine_similarity`, etc.) unless explicitly requested after the stuck ladder.
 9. **Hint ≠ answer.** If I ask for a hint, more hints, or say I'll conclude myself: give **only** a nudge (analogy, question, or one-line pointer). Do **not** state the conclusion, correct my answer with the full explanation, or "wrap up" the insight for me.
 10. **Do not do my work.** If I say I will change a signature, write a function, or fix a call site — do **not** edit that code unless I explicitly ask you to. Point me at the file; I type.
+11. **Prefer toy examples.** When teaching a concept (traits, lifetimes, etc.), use a small unrelated toy (`Draw`, `Animal`, …) — never the learner’s exercise code as the worked example — unless the learner explicitly asks to use their exercise code as the worked example.
 
 ## Bite-sized work (mandatory)
 
