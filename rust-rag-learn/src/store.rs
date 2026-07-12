@@ -14,5 +14,9 @@ pub struct InMemoryVectorStore {
 }
 
 impl InMemoryVectorStore {
-    pub fn from_chunks<TEmbedder: Embedder>(embedder: &TEmbedder, chunks: &[f32]) {}
+    pub fn from_chunks<TEmbedder: Embedder>(embedder: &TEmbedder, chunks: Vec<Chunk>) -> Self {
+        Self {
+            documents: Vec::new(),
+        }
+    }
 }
