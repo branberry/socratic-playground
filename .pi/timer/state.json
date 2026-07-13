@@ -1,10 +1,10 @@
 {
-  "mode": "work",
+  "mode": "idle",
   "paused": false,
-  "totalSec": 60,
-  "startedAt": "2026-07-13T04:17:30.851Z",
+  "totalSec": 0,
+  "startedAt": null,
   "pausedAt": null,
-  "track": "rust-rag-learn",
-  "cyclesToday": 2,
+  "track": null,
+  "cyclesToday": 0,
   "cycleDate": "2026-07-13"
 }
