@@ -183,6 +183,12 @@ export default function socratesStart(pi: ExtensionAPI) {
 		ctx.ui.notify(formatRecap(overview, learner, energy), "info");
 		ctx.ui.pasteToEditor(buildFreshSessionPrompt(overview, learner, energy, length));
 		ctx.ui.notify(`Fresh session ready · ${length}m · ${overview.verifyCommand}`, "info");
+
+		try {
+			pi.events.emit("socrates:timer:start", { minutes: length, track });
+		} catch {
+			// timer extension not loaded — ignore
+		}
 	}
 
 	async function runSetupCommand(ctx: ExtensionCommandContext, args: string): Promise<void> {
