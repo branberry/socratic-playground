@@ -4,7 +4,7 @@ Work through these steps in order. **You create each new module yourself** — t
 
 After each step, run the verify commands listed below.
 
-**Vision:** [VISION.md](VISION.md) · **Warm-up first:** [WEBGPU_WARMUP.md](WEBGPU_WARMUP.md) · **Track progress:** [PROGRESS.md](PROGRESS.md)
+**Vision:** [VISION.md](VISION.md) · **Warm-up first:** [WEBGPU_WARMUP.md](WEBGPU_WARMUP.md) · **Track progress:** [PROGRESS.md](PROGRESS.md) · **Readings:** [READING.md](READING.md)
 
 **Cognition pattern (every step):** Concept → (paper-before-code from Step 3+) → substeps → Discussion → Verify → Explain-back.
 
@@ -17,7 +17,8 @@ After each step, run the verify commands listed below.
 **Your task:**
 1. Read [VISION.md](VISION.md) — know what you're building toward
 2. Skim the wgpu docs mental model: [https://docs.rs/wgpu/latest/wgpu/](https://docs.rs/wgpu/latest/wgpu/)
-3. Run the scaffold:
+3. Skim the Step 0 readings in [READING.md](READING.md) — at minimum the WebGPU Fundamentals piece
+4. Run the scaffold:
    ```bash
    cargo run -p rust-webgpu
    ```

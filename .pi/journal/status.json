@@ -3,10 +3,10 @@
     "monorepo": {
       "track": "monorepo",
       "phase": 3,
-      "last_session_at": "2026-07-12T02:43:52.933Z",
-      "last_done": "What passed / what you did? I've updated the `store.rs` to have the InMemoryVectorStore as outlined in the `STEPS.md`. Not significant, but a modest step. I'll probably continue to do a bit more, but I wanted to test the journal extension.",
-      "next_5min": "work on search(query_vector,top_k) next.",
-      "last_fuzzy": "How exactly the vector store will work ie how many vectors should it have?"
+      "last_session_at": "2026-07-13T02:35:01.194Z",
+      "last_done": "(Previous: What passed / what you did? I've updated the `store.rs` to have the InMemoryVectorStore as outlined in the `STEPS.md`. Not significant, but a modest step. I'll probably continue to do a bit more, but I wanted to test the journal extension.)\n\nWhat passed / what you did today? I added the from_chunks method an a single unit test for the InMemoryVectorStore which lives in store.rs",
+      "next_5min": "maybe switch it up and work on the emulator",
+      "last_fuzzy": "What's still a bit fuzzy is where we actually store these outside of memory and persist vectors, but I am assuming that comes later. I know it was mentioned Qdrant and other opensource libraries do this."
     },
     "rust-rag-learn": {
       "track": "rust-rag-learn",
