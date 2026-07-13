@@ -335,7 +335,7 @@ export default function socratesTimer(pi: ExtensionAPI) {
 			id: randomUUID(),
 			track: state.track,
 			started_at: state.startedAt,
-			ended_at,
+			ended_at: endedAt,
 			duration_min: elapsedMin,
 			state: "interrupted",
 			cycles: state.cyclesToday,
