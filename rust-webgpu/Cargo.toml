@@ -6,3 +6,6 @@ description = "Hands-on WebGPU learning in Rust (scaffold)"
 readme = "README.md"
 
 [dependencies]
+winit = "0.30"
+wgpu = "24"
+pollster = "0.4"

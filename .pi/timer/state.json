@@ -1,10 +1,10 @@
 {
-  "mode": "work",
+  "mode": "break",
   "paused": false,
-  "totalSec": 1500,
-  "startedAt": "2026-07-13T03:49:41.382Z",
+  "totalSec": 300,
+  "startedAt": "2026-07-13T04:14:48.555Z",
   "pausedAt": null,
   "track": "rust-webgpu",
-  "cyclesToday": 1,
+  "cyclesToday": 2,
   "cycleDate": "2026-07-13"
 }
