@@ -32,7 +32,12 @@ impl InMemoryVectorStore {
         }
     }
 
-    pub fn search(&self, query_vector: Vec<f32>, top_k: usize) {}
+    pub fn search(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument> {
+        let scored_docs: Vec<ScoredDocument> = vec![];
+        // self.documents.iter().map();
+
+        return scored_docs;
+    }
 }
 
 #[cfg(test)]
@@ -97,7 +102,7 @@ mod tests {
         let store = InMemoryVectorStore::from_chunks(&embedder, chunks);
 
         let query = embedder.embed("cat");
-        let hits = store.search(&query, 10);
+        let hits = store.search(query, 10);
         for window in hits.windows(2) {
             assert!(
                 window[0].score >= window[1].score,
@@ -150,7 +155,7 @@ mod tests {
 
         let target = &store.documents[0];
         let query = target.vector.clone();
-        let hits = store.search(&query, 1);
+        let hits = store.search(query, 1);
         assert_eq!(hits.len(), 1);
         assert!(
             (hits[0].score - 1.0).abs() < 1e-4,
@@ -177,7 +182,7 @@ mod tests {
         let n = store.documents.len();
 
         let query = embedder.embed("anything");
-        let hits = store.search(&query, 100);
+        let hits = store.search(query, 100);
         assert_eq!(
             hits.len(),
             n,
@@ -193,7 +198,7 @@ mod tests {
         let store = InMemoryVectorStore { documents: vec![] };
 
         let query = embedder.embed("anything");
-        let hits = store.search(&query, 5);
+        let hits = store.search(query, 5);
         assert!(hits.is_empty(), "empty store should return no hits");
     }
 }
