@@ -1,4 +1,7 @@
-use crate::{chunk::Chunk, embed::Embedder};
+use crate::{
+    chunk::Chunk,
+    embed::{cosine_similarity, Embedder},
+};
 
 pub struct Document {
     pub chunk: Chunk,
@@ -34,8 +37,12 @@ impl InMemoryVectorStore {
 
     pub fn search(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument> {
         let scored_docs: Vec<ScoredDocument> = vec![];
-        // self.documents.iter().map();
-
+        let mut result: Vec<f32> = self
+            .documents
+            .iter()
+            .map(|doc| cosine_similarity(&query_vector, &doc.vector))
+            .collect();
+        result.sort_by();
         return scored_docs;
     }
 }
@@ -77,7 +84,7 @@ mod tests {
         assert!(store.documents.len() >= 3, "need >=3 docs for this test");
 
         let query = embedder.embed("cat");
-        let hits = store.search(&query, 2);
+        let hits = store.search(query, 2);
         assert!(
             hits.len() <= 2,
             "search should return at most top_k, got {}",
@@ -129,7 +136,7 @@ mod tests {
         let store = InMemoryVectorStore::from_chunks(&embedder, chunks);
 
         let query = embedder.embed("cat cat cat");
-        let hits = store.search(&query, 1);
+        let hits = store.search(query, 1);
         assert_eq!(hits.len(), 1);
         assert!(
             hits[0].document.chunk.text.contains("cat"),
