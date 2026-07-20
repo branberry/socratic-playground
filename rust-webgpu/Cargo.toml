@@ -7,5 +7,5 @@ readme = "README.md"
 
 [dependencies]
 winit = "0.30"
-wgpu = "24"
+wgpu = "30"
 pollster = "0.4"
