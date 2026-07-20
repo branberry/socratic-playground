@@ -3,9 +3,16 @@ name = "coding_with_quantum_computing_and_qubits"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "coding_with_quantum_computing_and_qubits"
+path = "src/main.rs"
+
 [dependencies]
+roqoqo = "1.22"
 roqoqo-quest = "0.19.0"
-# add deps via: cargo add <crate>
 
 # Learn-pi verify command: cargo test
 # Goal: coding with quantum computing and qubits (depth: standard)

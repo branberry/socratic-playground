@@ -300,6 +300,7 @@ dependencies = [
 name = "coding_with_quantum_computing_and_qubits"
 version = "0.1.0"
 dependencies = [
+ "roqoqo",
  "roqoqo-quest",
 ]
 
