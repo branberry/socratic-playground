@@ -297,14 +297,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "coding_with_quantum_computing_and_qubits"
-version = "0.1.0"
-dependencies = [
- "roqoqo",
- "roqoqo-quest",
-]
-
-[[package]]
 name = "combine"
 version = "4.6.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1567,6 +1559,14 @@ dependencies = [
  "schemars",
  "serde",
  "thiserror 2.0.18",
+]
+
+[[package]]
+name = "quantum-learning"
+version = "0.1.0"
+dependencies = [
+ "roqoqo",
+ "roqoqo-quest",
 ]
 
 [[package]]

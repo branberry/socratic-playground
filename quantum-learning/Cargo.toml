@@ -1,5 +1,5 @@
 [package]
-name = "coding_with_quantum_computing_and_qubits"
+name = "quantum-learning"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +7,7 @@ edition = "2021"
 path = "src/lib.rs"
 
 [[bin]]
-name = "coding_with_quantum_computing_and_qubits"
+name = "quantum-learning"
 path = "src/main.rs"
 
 [dependencies]

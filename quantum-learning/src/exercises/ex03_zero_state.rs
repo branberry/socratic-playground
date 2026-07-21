@@ -10,7 +10,9 @@ use roqoqo::Circuit;
 
 /// Build a 1-qubit circuit with no gates (|0⟩ baseline).
 pub fn zero_state_circuit() -> Circuit {
-    todo!("return an empty 1-qubit circuit")
+    let circuit = Circuit::new();
+
+    return circuit;
 }
 
 /// Return P(|0⟩) for the default |0⟩ state (should be ≈ 1.0).

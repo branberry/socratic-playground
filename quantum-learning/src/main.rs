@@ -1,7 +1,7 @@
 // coding_with_quantum_computing_and_qubits — learning sandbox for quantum computing in Rust.
 // Implement exercises in src/exercises/; verify with: cargo test
 
-use coding_with_quantum_computing_and_qubits as quantum;
+use quantum_learning as quantum;
 
 fn main() {
     println!("Quantum learning sandbox — run `cargo test` to verify exercises.");
