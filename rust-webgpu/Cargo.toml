@@ -8,4 +8,4 @@ readme = "README.md"
 [dependencies]
 winit = "0.30"
 wgpu = "24"
-pollster = "0.4"
+pollster = "1.0"
