@@ -4,6 +4,8 @@ Work through these steps in order. **You create each new module yourself** — t
 
 After each step, run the verify commands listed below.
 
+**Reading list:** [docs/RESOURCES.md](RESOURCES.md) — papers and articles per step.
+
 ---
 
 ## Step 0 — Run the scaffold
@@ -22,6 +24,11 @@ cargo run -- ingest
 ```
 
 You should see file names and byte counts — chunking comes in Step 1.
+
+**Resources:**
+- 📄 [RAG (Lewis et al., NeurIPS 2020)](https://arxiv.org/abs/2005.11401) — why retrieve passages instead of stuffing whole documents
+- 📘 [What is RAG?](https://docs.llamaindex.ai/en/stable/getting_started/concepts/) (LlamaIndex)
+- 📝 [RAG explained](https://www.pinecone.io/learn/retrieval-augmented-generation/) (Pinecone)
 
 ---
 
@@ -72,6 +79,12 @@ cargo run -- ingest   # long docs should produce multiple chunks
 
 **Stretch:** Split on paragraph boundaries first, then window within oversized paragraphs.
 
+**Resources:**
+- 📘 [Text splitters](https://python.langchain.com/docs/concepts/text_splitters/) (LangChain) — overlap and window size
+- 📝 [Best chunking strategies for RAG (2026)](https://www.firecrawl.dev/blog/best-chunking-strategies-rag)
+- 📄 [Lost in the Middle](https://arxiv.org/abs/2307.03172) (Liu et al.) — why chunk placement in the prompt matters later
+- More: [RESOURCES.md § Step 1](RESOURCES.md#step-1--chunking)
+
 ---
 
 ## Step 2 — Embeddings & similarity (create `src/embed.rs`)
@@ -97,6 +110,12 @@ cargo test embed
 
 Add unit tests: unit-length after normalize, identical texts → similarity ≈ 1.0.
 
+**Resources:**
+- 📄 [Sentence-BERT](https://arxiv.org/abs/1908.10084) (Reimers & Gurevych) — dense embeddings + cosine similarity
+- 📄 [Dense Passage Retrieval](https://arxiv.org/abs/2004.04906) (Karpukhin et al.) — dual-encoder retrieval with dot product
+- 📘 [OpenAI embeddings guide](https://platform.openai.com/docs/guides/embeddings) — dimensions, same model for docs and queries
+- More: [RESOURCES.md § Step 2](RESOURCES.md#step-2--embeddings--similarity)
+
 ---
 
 ## Step 3 — Vector store (create `src/store.rs`)
@@ -120,6 +139,13 @@ Build:
 ```bash
 cargo test store
 ```
+
+**Resources:**
+- 📄 [FAISS](https://arxiv.org/abs/1702.08734) (Johnson et al.) — billion-scale vector search
+- 📄 [HNSW](https://arxiv.org/abs/1603.09320) (Malkov & Yashunin) — approximate nearest neighbors (Step 6 preview)
+- 📝 [Vector database guide](https://www.pinecone.io/learn/vector-database/) (Pinecone)
+- 📘 [FLOAT_ORD.md](FLOAT_ORD.md) — sorting `f32` scores in Rust
+- More: [RESOURCES.md § Step 3](RESOURCES.md#step-3--vector-store)
 
 ---
 
@@ -165,6 +191,13 @@ cargo test hybrid
 cargo run -- search "ownership and borrowing"   # compare dense vs hybrid if you add a flag
 ```
 
+**Resources:**
+- 📄 [Dense Passage Retrieval](https://arxiv.org/abs/2004.04906) (Karpukhin et al.) — dense retrieval baseline
+- 📄 [BM25 and Beyond](https://www.staff.city.ac.uk/~sbrp622/papers/foundations_bm25_review.pdf) (Robertson & Zaragoza) — sparse / keyword search
+- 📄 [Reciprocal Rank Fusion](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf) (Cormack et al.) — hybrid fusion stretch
+- 📝 [Hybrid search](https://www.elastic.co/search-labs/blog/hybrid-search-elasticsearch) (Elastic)
+- More: [RESOURCES.md § Step 4](RESOURCES.md#step-4--retrieval--hybrid-search)
+
 ---
 
 ## Step 5 — RAG (create `src/rag.rs`)
@@ -202,6 +235,13 @@ Ollama embeddings: `POST http://localhost:11434/api/embeddings`
 cargo run -- ask "What is a vector database?"
 ```
 
+**Resources:**
+- 📄 [RAG (Lewis et al.)](https://arxiv.org/abs/2005.11401) — retriever + generator; BM25 vs dense ablations
+- 📄 [Lost in the Middle](https://arxiv.org/abs/2307.03172) (Liu et al.) — where to put retrieved chunks in the prompt
+- 📘 [Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering) — grounding instructions
+- 📘 [Ollama embeddings API](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-embeddings)
+- More: [RESOURCES.md § Step 5](RESOURCES.md#step-5--rag-retrieve--generate)
+
 ---
 
 ## Step 6 — Traits & production vector DB (stretch)
@@ -219,6 +259,13 @@ cargo run -- ask "What is a vector database?"
 | pgvector | `sqlx` + Postgres | When you already use Postgres |
 
 **Discussion:** What's the trade-off between HNSW (approximate) and linear scan (exact)?
+
+**Resources:**
+- 📘 [Qdrant documentation](https://qdrant.tech/documentation/)
+- 📘 [LanceDB documentation](https://lancedb.github.io/lancedb/)
+- 📄 [HNSW](https://arxiv.org/abs/1603.09320) (Malkov & Yashunin) — speed vs recall
+- 📘 [The Rust Book — Traits](https://doc.rust-lang.org/book/ch10-02-traits.html)
+- More: [RESOURCES.md § Step 6](RESOURCES.md#step-6--traits--production-backends)
 
 ---
 
@@ -250,6 +297,13 @@ cargo run -- eval
 ```
 
 **Stretch further:** Wire failing prod/manual queries back into `data/eval/` (eval feedback loop). Optional: try [Ragas](https://github.com/explodinggradients/ragas)-style faithfulness/context-precision ideas in Rust or via a small Python sidecar.
+
+**Resources:**
+- 📄 [RAGAS](https://arxiv.org/abs/2309.15217) (Es et al.) — faithfulness, context precision/recall
+- 📄 [BEIR benchmark](https://arxiv.org/abs/2104.08663) (Thakur et al.) — retrieval eval across 18 datasets
+- 📄 [MTEB](https://arxiv.org/abs/2210.07316) (Muennighoff et al.) — embedding quality benchmark
+- 📘 [Ragas docs](https://docs.ragas.io/)
+- More: [RESOURCES.md § Step 7](RESOURCES.md#step-7--evaluation)
 
 ---
 

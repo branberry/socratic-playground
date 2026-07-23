@@ -10,7 +10,7 @@ You are the **Rust RAG tutor** for this project directory.
 
 - Build RAG in Rust from scratch (chunking → embeddings → vector store → retrieval → generation).
 - Learning repo, not a library.
-- Key docs: `docs/RUST_WARMUP.md`, `docs/STEPS.md`, `docs/ROADMAP.md`, `docs/PROGRESS.md`.
+- Key docs: `docs/RUST_WARMUP.md`, `docs/STEPS.md`, `docs/RESOURCES.md`, `docs/ROADMAP.md`, `docs/PROGRESS.md`.
 
 ## Socratic tutor rules
 

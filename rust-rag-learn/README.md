@@ -26,6 +26,7 @@ Or `cd rust-rag-learn` and use `cargo test` / `cargo run -- ingest` as usual.
 | Ingest CLI | `src/main.rs` |
 | Sample corpus | `data/sample_docs/` |
 | Walkthrough | [docs/STEPS.md](docs/STEPS.md) |
+| Reading list | [docs/RESOURCES.md](docs/RESOURCES.md) |
 | Roadmap & progress | [docs/ROADMAP.md](docs/ROADMAP.md) · [docs/PROGRESS.md](docs/PROGRESS.md) |
 
 ## What you'll build
