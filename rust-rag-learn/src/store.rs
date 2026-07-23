@@ -45,7 +45,7 @@ impl InMemoryVectorStore {
                 document: doc,
             })
             .collect();
-        scored_docs.sort_by(|a, b| a.score.total_cmp(&b.score));
+        scored_docs.sort_by(|a, b| b.score.total_cmp(&a.score));
         let docs_num = top_k.min(scored_docs.len());
         return scored_docs[..docs_num].to_vec();
     }
