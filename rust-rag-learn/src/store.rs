@@ -36,7 +36,7 @@ impl InMemoryVectorStore {
         }
     }
 
-    pub fn search<'a>(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument<'a>> {
+    pub fn search<'a>(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument<'_>> {
         let mut scored_docs: Vec<ScoredDocument> = self
             .documents
             .iter()
@@ -46,7 +46,8 @@ impl InMemoryVectorStore {
             })
             .collect();
         scored_docs.sort_by(|a, b| a.score.total_cmp(&b.score));
-        return scored_docs[..top_k].to_vec();
+        let docs_num = top_k.min(scored_docs.len());
+        return scored_docs[..docs_num].to_vec();
     }
 }
 
