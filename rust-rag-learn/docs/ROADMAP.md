@@ -310,6 +310,7 @@ Publish when each phase’s demo checkpoint passes — repo can stay “in progr
 | [PROGRESS.md](PROGRESS.md) | Checkboxes + last session notes |
 | [STEPS.md](STEPS.md) | Implementation tasks per step |
 | [RUST_WARMUP.md](RUST_WARMUP.md) | Warm-up concepts |
+| [FLOAT_ORD.md](FLOAT_ORD.md) | Why `f32`/`f64` don't impl `Ord`; `total_cmp`; NaN handling (Step 3 sort reference) |
 | [AI_LEARNING_WORKFLOW.md](AI_LEARNING_WORKFLOW.md) | AI tutor sessions & stuck ladder |
 | [WEEKLY_ROUTINE.md](WEEKLY_ROUTINE.md) | Weekly schedule, retrieval, Sunday review |
 

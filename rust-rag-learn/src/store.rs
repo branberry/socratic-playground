@@ -7,8 +7,9 @@ pub struct Document {
     pub chunk: Chunk,
     pub vector: Vec<f32>,
 }
-pub struct ScoredDocument {
-    pub document: Document,
+#[derive(Clone)]
+pub struct ScoredDocument<'a> {
+    pub document: &'a Document,
     pub score: f32,
 }
 
@@ -35,15 +36,17 @@ impl InMemoryVectorStore {
         }
     }
 
-    pub fn search(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument> {
-        let scored_docs: Vec<ScoredDocument> = vec![];
-        let mut result: Vec<f32> = self
+    pub fn search<'a>(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument<'a>> {
+        let mut scored_docs: Vec<ScoredDocument> = self
             .documents
             .iter()
-            .map(|doc| cosine_similarity(&query_vector, &doc.vector))
+            .map(|doc| ScoredDocument {
+                score: cosine_similarity(&query_vector, &doc.vector),
+                document: doc,
+            })
             .collect();
-        result.sort_by();
-        return scored_docs;
+        scored_docs.sort_by(|a, b| a.score.total_cmp(&b.score));
+        return scored_docs[..top_k].to_vec();
     }
 }
 
