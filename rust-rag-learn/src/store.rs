@@ -36,7 +36,7 @@ impl InMemoryVectorStore {
         }
     }
 
-    pub fn search<'a>(&self, query_vector: Vec<f32>, top_k: usize) -> Vec<ScoredDocument<'_>> {
+    pub fn search<'a>(&self, query_vector: &[f32], top_k: usize) -> Vec<ScoredDocument<'_>> {
         let mut scored_docs: Vec<ScoredDocument> = self
             .documents
             .iter()
@@ -45,6 +45,8 @@ impl InMemoryVectorStore {
                 document: doc,
             })
             .collect();
+        // sort by descending
+
         scored_docs.sort_by(|a, b| b.score.total_cmp(&a.score));
         let docs_num = top_k.min(scored_docs.len());
         return scored_docs[..docs_num].to_vec();
@@ -88,7 +90,7 @@ mod tests {
         assert!(store.documents.len() >= 3, "need >=3 docs for this test");
 
         let query = embedder.embed("cat");
-        let hits = store.search(query, 2);
+        let hits = store.search(&query, 2);
         assert!(
             hits.len() <= 2,
             "search should return at most top_k, got {}",
@@ -113,7 +115,7 @@ mod tests {
         let store = InMemoryVectorStore::from_chunks(&embedder, chunks);
 
         let query = embedder.embed("cat");
-        let hits = store.search(query, 10);
+        let hits = store.search(&query, 10);
         for window in hits.windows(2) {
             assert!(
                 window[0].score >= window[1].score,
@@ -140,7 +142,7 @@ mod tests {
         let store = InMemoryVectorStore::from_chunks(&embedder, chunks);
 
         let query = embedder.embed("cat cat cat");
-        let hits = store.search(query, 1);
+        let hits = store.search(&query, 1);
         assert_eq!(hits.len(), 1);
         assert!(
             hits[0].document.chunk.text.contains("cat"),
@@ -166,7 +168,7 @@ mod tests {
 
         let target = &store.documents[0];
         let query = target.vector.clone();
-        let hits = store.search(query, 1);
+        let hits = store.search(&query, 1);
         assert_eq!(hits.len(), 1);
         assert!(
             (hits[0].score - 1.0).abs() < 1e-4,
@@ -190,10 +192,9 @@ mod tests {
             .collect();
         let store = InMemoryVectorStore::from_chunks(&embedder, chunks);
         let n = store.documents.len();
-        let n = store.documents.len();
 
         let query = embedder.embed("anything");
-        let hits = store.search(query, 100);
+        let hits = store.search(&query, 100);
         assert_eq!(
             hits.len(),
             n,
@@ -209,7 +210,7 @@ mod tests {
         let store = InMemoryVectorStore { documents: vec![] };
 
         let query = embedder.embed("anything");
-        let hits = store.search(query, 5);
+        let hits = store.search(&query, 5);
         assert!(hits.is_empty(), "empty store should return no hits");
     }
 }
